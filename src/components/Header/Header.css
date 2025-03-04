@@ -1,0 +1,28 @@
+.header-container{
+    padding: 10px 40px;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid gray;
+
+    .logo-header{
+         img{
+         
+        height: 80px; 
+        } 
+        
+    }
+
+    .items-header{
+        display: flex;
+         gap: 20px;
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        
+    }
+
+}

@@ -1,0 +1,41 @@
+
+
+.container-products-card{
+ 
+.image-container {
+    width: 100%;
+    height: 24rem; /* 96 * 0.25rem (tailwind) */
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .image-container:hover img {
+    transform: scale(1.1);
+  }
+
+  .category-price{
+    display: flex;
+    justify-content: space-between;
+    .container-price{
+      display: flex;
+      border: 2px solid red;
+      gap:10px;
+      .price{
+        text-decoration: line-through;
+        color: gray;
+
+      }
+      .old-price{
+        color: black;
+
+      }
+    }
+  }
+}
