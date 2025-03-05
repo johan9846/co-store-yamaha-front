@@ -8,18 +8,27 @@ import "./ProductsCard.css";
 export const ProductsCard = ({ product }) => {
   const { addToCart } = useCartStore();
 
-  const { title, oldPrice, price, image, category, isNew, description } =
-    product;
+  const {
+    brand,
+    model,
+    category,
+    name,
+    oldPrice,
+    price,
+    image,
+    rating,
+    description,
+  } = product;
 
   const navigate = useNavigate();
 
-  const _id = title;
+  const id = name;
 
-  const idString = (Title) => {
-    const newIdString = String(Title).toLowerCase().split(" ").join("");
+  const idString = (name) => {
+    const newIdString = String(name).toLowerCase().split(" ").join("");
     return newIdString;
   };
-  const rootId = idString(_id);
+  const rootId = idString(id);
   // console.log(rootId)
 
   const handleDetails = () => {
@@ -30,8 +39,6 @@ export const ProductsCard = ({ product }) => {
     });
   };
 
-
-
   return (
     <div className="container-products-card mt-5">
       <div className="image-container">
@@ -39,7 +46,7 @@ export const ProductsCard = ({ product }) => {
       </div>
 
       <div>
-        <h2>{title}</h2>
+        <h2>{name}</h2>
       </div>
 
       <div className="category-price">
@@ -50,31 +57,37 @@ export const ProductsCard = ({ product }) => {
         </div>
       </div>
 
+      <div className="mt-3">
+        {brand} - {model}
+      </div>
+
+      <div className="mt-2">{description}</div>
       <div className="mt-2">
         <button
           onClick={() => {
-             addToCart({
-              _id: product._id,
-              title: product.title,
+            addToCart({
+              id: product.id,
+              brand: product.brand,
+              model: product.model,
+              category: product.category,
+              name: product.name,
               image: product.image,
               price: product.price,
               quantity: 1,
               description: product.description,
-            }); 
+            });
 
             setTimeout(() => {
-              toast.success(`${product.title} is added`);
+              toast.success(`${product.name} is added`);
             }, 50);
           }}
         >
-         Agregar al Carrito
+          Agregar al Carrito
         </button>
-        <div>{isNew && <p>Sale</p>}</div>
       </div>
-      
 
       <ToastContainer
-        position='top-left'
+        position="top-left"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -83,7 +96,7 @@ export const ProductsCard = ({ product }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='dark'
+        theme="dark"
       />
     </div>
   );

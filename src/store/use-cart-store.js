@@ -9,12 +9,12 @@ export const useCartStore = create(
 
       addToCart: (product) =>
         set((state) => {
-          const existingItem = state.productData.find((item) => item._id === product._id);
+          const existingItem = state.productData.find((item) => item.id === product.id);
 
           if (existingItem) {
             return {
               productData: state.productData.map((item) =>
-                item._id === product._id
+                item.id === product.id
                   ? { ...item, quantity: item.quantity + (product.quantity || 1) }
                   : item
               ),
@@ -26,22 +26,24 @@ export const useCartStore = create(
 
       deleteFromCart: (id) =>
         set((state) => ({
-          productData: state.productData.filter((item) => item._id !== id),
+          productData: state.productData.filter((item) => item.id !== id),
         })),
 
       resetCart: () => set({ productData: [] }),
 
       incrementQuantity: (id) =>
         set((state) => ({
+
+          
           productData: state.productData.map((item) =>
-            item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
           ),
         })),
 
       decrementQuantity: (id) =>
         set((state) => ({
           productData: state.productData.map((item) =>
-            item._id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
           ),
         })),
 
