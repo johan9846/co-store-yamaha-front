@@ -35,7 +35,7 @@ export const CartItem = () => {
         <Row>
           <Col xs={12} sm={12} md={7} lg={7} xl={7} xxl={7}>
             {productData.map((item, key) => (
-              <Row className="mt-3">
+              <Row className="mt-3" key={key}>
                 <Col
                   xs={1}
                   sm={1}
