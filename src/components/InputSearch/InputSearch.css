@@ -33,7 +33,7 @@
 .productList {
   position: absolute;
   padding: 0 10px;
-  max-height: 50vh;
+  max-height: 60vh;
   z-index: 10;
   padding: 20px 0;
   overflow: auto;
