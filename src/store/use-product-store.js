@@ -23,8 +23,8 @@ export const useProductStore = create((set, get) => ({
           model: "Crypton FI",
           category: "Frenos",
           name: "Pastillas de freno delanteras",
-          oldPrice: 100,
-          price: 80,
+          oldPrice: 1000000,
+          price: 800000,
           rating: 4,
           image:rossi,
           description: "Pastillas de freno de alto rendimiento para máxima seguridad y durabilidad."

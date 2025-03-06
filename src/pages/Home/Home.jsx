@@ -20,11 +20,11 @@ export const Home = () => {
 
 
   return (
-    <Container >
+    <Container className="mt-4">
 
-      <div style={{fontSize:"60px"}}>FEDE TE AMO</div>
+
     
-      <Row style={{border:"2px solid black"}} className="mt-4">
+      <Row style={{border:"2px solid black"}} >
         {products.map((item, key) => (
           <Col xs={12} sm={10} md={4} lg={4} xl={3} xxl={3} className="px-3"  key={item.id} >
             <ProductsCard product={item} key={key} />

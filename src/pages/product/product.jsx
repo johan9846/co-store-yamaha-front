@@ -23,7 +23,7 @@ export const Product = () => {
   const location = useLocation();
   useEffect(() => {
     setDetails(location.state.item);
-  }, []);
+  }, [location.state?.item]);
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) =>
@@ -37,7 +37,7 @@ export const Product = () => {
 
   return (
     <>
-      <Container className="container-products-detail">
+      <Container className="container-products-detail mt-4">
         <Row>
           <Col>
             <Row style={{ border: "2px solid green " }}>
@@ -59,8 +59,9 @@ export const Product = () => {
 
                   <div className="category-price">
                     <div className="container-price">
-                      <div className="price">${details.price}</div>
                       <div className="old-price">${details.oldPrice}</div>
+                      <div className="price">${details.price}</div>
+                      
                     </div>
                   </div>
                 </div>
@@ -110,7 +111,7 @@ export const Product = () => {
                         name: details.name,
                         image: details.image,
                         price: details.price,
-                        quantity: 1,
+                        quantity: baseQty,
                         description: details.description,
                       }) && toast.success(`${details.title} is added`)
                     }

@@ -52,8 +52,9 @@ export const ProductsCard = ({ product }) => {
       <div className="category-price">
         <div>{category}</div>
         <div className="container-price">
-          <div className="price">${price}</div>
           <div className="old-price">${oldPrice}</div>
+          <div className="price">${price}</div>
+          
         </div>
       </div>
 

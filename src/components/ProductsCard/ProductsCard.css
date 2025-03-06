@@ -27,12 +27,12 @@
       display: flex;
       border: 2px solid red;
       gap:10px;
-      .price{
+      .old-price{
         text-decoration: line-through;
         color: gray;
 
       }
-      .old-price{
+      .price{
         color: black;
 
       }

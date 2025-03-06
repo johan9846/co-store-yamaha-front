@@ -2,6 +2,8 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { useProductStore } from "../../store/use-product-store";
+import parts from "../../assets/parts.svg";
+import "./FilterInput.css";
 
 export const FilterInput = () => {
   const { products } = useProductStore();
@@ -53,87 +55,96 @@ export const FilterInput = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          {/* Select de Marca */}
+    <Row style={{ width: "100%" }} className="d-flex justify-content-center">
+      <Col
+        xs={10}
+        sm={10}
+        md={3}
+        lg={2}
+        xl={2}
+        xxl={2}
+        className="icon-filter mt-3 mt-md-0"
+      >
+        <img src={parts} alt="" /> Buscar partes
+      </Col>
 
-          <select
-            className="form-select"
-            value={selectedBrand}
-            onChange={(e) => {
-              setSelectedBrand(e.target.value);
-              setSelectedModel(""); // Resetear modelo al cambiar marca
-              setSelectedCategory(""); // Resetear categoría
-            }}
-          >
-            <option value="">Seleccione una marca</option>
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
-        </Col>
+      <Col xs={10} sm={10} md={2} lg={2} xl={2} xxl={2} className="mt-3">
+        {/* Select de Marca */}
 
-        <Col>
-          {/* Select de Modelo */}
+        <select
+          className="form-select"
+          value={selectedBrand}
+          onChange={(e) => {
+            setSelectedBrand(e.target.value);
+            setSelectedModel(""); // Resetear modelo al cambiar marca
+            setSelectedCategory(""); // Resetear categoría
+          }}
+        >
+          <option value="">Seleccione Marca</option>
+          {brands.map((brand) => (
+            <option key={brand} value={brand}>
+              {brand}
+            </option>
+          ))}
+        </select>
+      </Col>
 
-          <select
-            className="form-select"
-            value={selectedModel}
-            onChange={(e) => {
-              setSelectedModel(e.target.value);
-              setSelectedCategory(""); // Resetear categoría
-            }}
-            disabled={!selectedBrand}
-          >
-            <option value="">Seleccione un modelo</option>
-            {models.map((model) => (
-              <option key={model} value={model}>
-                {model}
-              </option>
-            ))}
-          </select>
-        </Col>
+      <Col xs={10} sm={10} md={2} lg={2} xl={2} xxl={2} className="mt-3">
+        {/* Select de Modelo */}
 
-        <Col>
-          {/* Select de Categoría */}
+        <select
+          className="form-select"
+          value={selectedModel}
+          onChange={(e) => {
+            setSelectedModel(e.target.value);
+            setSelectedCategory(""); // Resetear categoría
+          }}
+          disabled={!selectedBrand}
+        >
+          <option value="">Seleccione Modelo</option>
+          {models.map((model) => (
+            <option key={model} value={model}>
+              {model}
+            </option>
+          ))}
+        </select>
+      </Col>
 
-          <select
-            className="form-select"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            disabled={!selectedBrand || !selectedModel}
-          >
-            <option value="">Seleccione una categoría</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </Col>
+      <Col xs={10} sm={10} md={2} lg={2} xl={3} xxl={3} className="mt-3">
+        {/* Select de Categoría */}
 
-        <Col className="d-flex align-items-center">
-          {/* Botón de búsqueda */}
-          <Button
-            variant="contained"
-            
-            onClick={handleSearch}
-            disabled={!selectedBrand || !selectedModel || !selectedCategory}
-            style={{
-              backgroundColor:
-                !selectedBrand || !selectedModel || !selectedCategory
-                  ? "#b0bec5"
-                  : "#1976d2",
-              color: "white",
-            }}
-          >
-            Buscar
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+        <select
+          className="form-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          disabled={!selectedBrand || !selectedModel}
+        >
+          <option value="">Seleccione Categoría</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </Col>
+
+      <Col className=" mt-3 mb-3" xs={10} sm={10} md={2} lg={2} xl={1} xxl={1}>
+        {/* Botón de búsqueda */}
+        <Button
+          onClick={handleSearch}
+          disabled={!selectedBrand || !selectedModel || !selectedCategory}
+          style={{
+            backgroundColor:
+              !selectedBrand || !selectedModel || !selectedCategory
+                ? "#b0bec5"
+                : "#CEFD12",
+            color: "black",
+            width: "100%",
+          }}
+        >
+          Buscar
+        </Button>
+      </Col>
+    </Row>
   );
 };
