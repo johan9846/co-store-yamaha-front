@@ -1,10 +1,7 @@
-.container-products-card {
-
-padding: 20px 0;
-
+.container-products-detail {
   .container-carrousell {
     width: 100%;
-    max-width: 89vw;
+    max-width: 92vw;
     border: 2px solid rgb(229, 255, 0);
     display: flex;
     justify-content: center;
@@ -12,12 +9,12 @@ padding: 20px 0;
 
     .carrousell {
       border: 2px solid red;
-      width: 90%;
+      width: 80%;
     }
 
     .image-slick {
       border: 2px solid blue;
-      height: 220px;
+      max-height: 45vh;
       width: 100%;
       transition: transform 0.5s ease-in-out;
     }
@@ -36,6 +33,7 @@ padding: 20px 0;
       color: #0039b1 !important;
     }
   }
+
   .category-price {
     display: flex;
     justify-content: space-between;
@@ -50,6 +48,30 @@ padding: 20px 0;
       .price {
         color: black;
       }
+    }
+  }
+
+  .container-amount {
+    display: flex;
+    border: 2px solid blue;
+    align-items: center;
+    gap: 20px;
+
+    .amount-counter {
+      display: flex;
+      gap: 10px;
+
+      .button-amount {
+        padding: 0 10px;
+
+        cursor: pointer;
+      }
+    }
+
+    .button-add {
+      padding: 10px;
+      background-color: black;
+      color: white;
     }
   }
 }

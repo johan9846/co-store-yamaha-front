@@ -13,6 +13,7 @@ import { Header } from "./components/Header/Header";
 import { useProductStore } from "../src/store/use-product-store";
 import "./App.css";
 import { SearchResults } from "./pages/SearchResults/SearchResults ";
+import { FilterResult } from "./pages/FilterResult/FilterResult";
 
 const Layout = () => {
   return (
@@ -38,6 +39,8 @@ const router = createBrowserRouter([
         path: "/product/:id",
         element: <Product />,
       },
+
+      { path: "/products/filter", element: <FilterResult /> }, // Ruta nueva para búsqueda
       {
         path: "/cart",
         element: <Cart />,

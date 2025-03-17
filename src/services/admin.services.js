@@ -19,3 +19,10 @@ export const getAllProduct = async () => {
 export const getAllProductId = async (id) => {
   return Axios.get(`${apiUrl}/products/product/${id}`);
 };
+
+
+export const getFilterProduct = async (brand, model, category_id) => {
+  return Axios.get(
+    `${apiUrl}/products/filter?brand=${brand}&model=${model}&category_id=${category_id}`
+  );
+};

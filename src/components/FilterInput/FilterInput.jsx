@@ -49,8 +49,9 @@ export const FilterInput = () => {
 
   // Función para manejar la búsqueda
   const handleSearch = () => {
+
     navigate(
-      `/search?brand=${selectedBrand}&model=${selectedModel}&category=${selectedCategory}`
+      `/products/filter?brand=${selectedBrand}&model=${selectedModel}&category_id=${selectedCategory}`
     );
   };
 

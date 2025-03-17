@@ -4,7 +4,7 @@ import { useLoaderData } from "react-router-dom";
 import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import { Container, Row, Col } from "react-bootstrap";
 import { useProductStore } from "../../store/use-product-store";
-import { getAllCategories, getAllProduct } from "../../services/admin.services";
+import {  getAllProduct } from "../../services/admin.services";
 
 
 
@@ -23,7 +23,7 @@ export const Home = () => {
 
 
 
-  const getProdcts = useCallback(async () => {
+  const getProducts = useCallback(async () => {
     try {
       const { data } = await getAllProduct();
 
@@ -40,8 +40,8 @@ export const Home = () => {
 
 
   useEffect(() => {
-    getProdcts();
-  }, [getProdcts]);
+    getProducts();
+  }, [getProducts]);
 
   return (
     <Container className="mt-4">
