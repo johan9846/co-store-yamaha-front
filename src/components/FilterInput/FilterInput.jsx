@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useProductStore } from "../../store/use-product-store";
+
 import parts from "../../assets/parts.svg";
 import "./FilterInput.css";
 
-export const FilterInput = () => {
-  const { products } = useProductStore();
+export const FilterInput = ({ data }) => {
   const navigate = useNavigate();
 
   // Estados para los filtros
@@ -16,43 +15,41 @@ export const FilterInput = () => {
 
   // Obtener marcas únicas
   const brands = useMemo(() => {
-    return [...new Set(products.map((p) => p.brand))];
-  }, [products]);
+    return [...new Set(data.map((p) => p.brand))];
+  }, [data]);
 
   // Obtener modelos únicos según la marca seleccionada
   const models = useMemo(() => {
     return selectedBrand
       ? [
           ...new Set(
-            products
-              .filter((p) => p.brand === selectedBrand)
-              .map((p) => p.model)
+            data.filter((p) => p.brand === selectedBrand).map((p) => p.model)
           ),
         ]
       : [];
-  }, [selectedBrand, products]);
+  }, [selectedBrand, data]);
 
   // Obtener categorías únicas según marca y modelo seleccionados
   const categories = useMemo(() => {
     return selectedBrand && selectedModel
-      ? [
-          ...new Set(
-            products
-              .filter(
-                (p) => p.brand === selectedBrand && p.model === selectedModel
-              )
-              .map((p) => p.category)
-          ),
-        ]
+      ? data
+          .filter((p) => p.brand === selectedBrand && p.model === selectedModel)
+          .map((p) => p.category) // Extraemos el objeto completo de categoría
+          .filter(
+            (value, index, self) =>
+              index === self.findIndex((cat) => cat.id === value.id)
+          ) // Filtrar duplicados basados en el id de la categoría
       : [];
-  }, [selectedBrand, selectedModel, products]);
+  }, [selectedBrand, selectedModel, data]);
 
   // Función para manejar la búsqueda
   const handleSearch = () => {
-
     navigate(
       `/products/filter?brand=${selectedBrand}&model=${selectedModel}&category_id=${selectedCategory}`
     );
+    setSelectedBrand("");
+    setSelectedModel("");
+    setSelectedCategory("");
   };
 
   return (
@@ -122,8 +119,8 @@ export const FilterInput = () => {
         >
           <option value="">Seleccione Categoría</option>
           {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
+            <option key={category.id} value={category.id}>
+              {category.name}
             </option>
           ))}
         </select>

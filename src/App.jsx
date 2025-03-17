@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Home } from "./pages/Home/Home";
 import { Cart } from "./pages/cart/cart";
 import { Product } from "./pages/product/product";
-/* import { productsData } from './api/Api'; */
+import { getAllProduct } from "./services/admin.services";
 import {
   createBrowserRouter,
   Outlet,
@@ -10,52 +10,81 @@ import {
   ScrollRestoration,
 } from "react-router-dom";
 import { Header } from "./components/Header/Header";
-import { useProductStore } from "../src/store/use-product-store";
-import "./App.css";
+
 import { SearchResults } from "./pages/SearchResults/SearchResults ";
 import { FilterResult } from "./pages/FilterResult/FilterResult";
 
-const Layout = () => {
+import "./App.css";
+
+// Componente Layout para el encabezado y contenedor de rutas hijas
+const Layout = ({ dataProduct }) => {
+  console.log("Data en Layout:", dataProduct); // Verificar si los datos llegan aquí
   return (
     <div>
-      <Header />
+      <Header data={dataProduct} />
       <ScrollRestoration />
       <Outlet />
     </div>
   );
 };
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-        /* loader: productsData */
-      },
-      {
-        path: "/product/:id",
-        element: <Product />,
-      },
-
-      { path: "/products/filter", element: <FilterResult /> }, // Ruta nueva para búsqueda
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      { path: "/search", element: <SearchResults /> }, // Ruta nueva para búsqueda
-    ],
-  },
-]);
-
 function App() {
-  const { fetchProducts } = useProductStore();
+  const [dataProduct, setDataProduct] = useState([]);
+
+  // Función para obtener los productos
+  const getProducts = useCallback(async () => {
+    try {
+      const { data } = await getAllProduct();
+      if (data) {
+        // Ordenar productos por fecha de creación
+        const sortedData = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setDataProduct(sortedData);
+      }
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+    }
+  }, []);
 
   useEffect(() => {
-    fetchProducts(); // Llamar solo una vez cuando se monta App
-  }, []);
+    console.log("productooooooossss")
+    getProducts();
+  }, [getProducts]);
+
+  if (dataProduct.length === 0) {
+    return <p>Cargando productos...</p>;
+  }
+
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout dataProduct={dataProduct} />, // Pasamos el estado como prop
+      children: [
+        {
+          path: "/",
+          element: <Home data={dataProduct} />,
+        },
+        {
+          path: "/product/:id",
+          element: <Product />,
+        },
+        {
+          path: "/products/filter", // Ruta para la búsqueda filtrada
+          element: <FilterResult />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
+        },
+        {
+          path: "/search", // Ruta para resultados de búsqueda
+          element: <SearchResults />,
+        },
+      ],
+    },
+  ]);
 
   return (
     <div className="app">
