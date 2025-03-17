@@ -1,3 +1,7 @@
+.MuiAutocomplete-hasPopupIcon.css-1tlcqt-MuiAutocomplete-root .MuiOutlinedInput-root, .MuiAutocomplete-hasClearIcon.css-1tlcqt-MuiAutocomplete-root .MuiOutlinedInput-root {
+  padding-right: 10px !important;
+}
+
 .container {
   position: relative;
   
@@ -22,7 +26,7 @@
   top: 120px; /* Ajusta la posición */
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70vw;
+  width: 78vw !important;
   max-width: 400px;
   z-index: 20;
   background: white;
@@ -30,28 +34,13 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.productList {
-  position: absolute;
-  padding: 0 10px;
-  max-height: 60vh;
-  z-index: 10;
-  padding: 20px 0;
-  overflow: auto;
-
-  @media screen and (max-width: 768px) {
-    top: 160px;
-    left: 50%; /* Centrar horizontalmente */
-    transform: translateX(
-      -50%
-    ) !important; /* Ajustar al centro sin moverlo verticalmente */
-    max-width: 380px;
-    width: max-content;
-  }
-}
 
 .listItem {
   cursor: pointer;
   border-bottom: 1px solid rgb(205, 205, 206);
+  padding: 10px 20px;
+  
+ 
 }
 
 .listItem:last-child {

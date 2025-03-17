@@ -57,8 +57,8 @@ export const FilterInput = () => {
   return (
     <Row style={{ width: "100%" }} className="d-flex justify-content-center">
       <Col
-        xs={10}
-        sm={10}
+        xs={11}
+        sm={11}
         md={3}
         lg={2}
         xl={2}
@@ -68,7 +68,7 @@ export const FilterInput = () => {
         <img src={parts} alt="" /> Buscar partes
       </Col>
 
-      <Col xs={10} sm={10} md={2} lg={2} xl={2} xxl={2} className="mt-3">
+      <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="mt-3">
         {/* Select de Marca */}
 
         <select
@@ -89,7 +89,7 @@ export const FilterInput = () => {
         </select>
       </Col>
 
-      <Col xs={10} sm={10} md={2} lg={2} xl={2} xxl={2} className="mt-3">
+      <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="mt-3">
         {/* Select de Modelo */}
 
         <select
@@ -110,7 +110,7 @@ export const FilterInput = () => {
         </select>
       </Col>
 
-      <Col xs={10} sm={10} md={2} lg={2} xl={3} xxl={3} className="mt-3">
+      <Col xs={11} sm={11} md={2} lg={2} xl={3} xxl={3} className="mt-3">
         {/* Select de Categoría */}
 
         <select
@@ -128,7 +128,7 @@ export const FilterInput = () => {
         </select>
       </Col>
 
-      <Col className=" mt-3 mb-3" xs={10} sm={10} md={2} lg={2} xl={1} xxl={1}>
+      <Col className=" mt-3 mb-3" xs={11} sm={11} md={2} lg={2} xl={1} xxl={1}>
         {/* Botón de búsqueda */}
         <Button
           onClick={handleSearch}

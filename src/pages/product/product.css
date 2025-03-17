@@ -1,18 +1,36 @@
 .container-products-detail {
-  .image-detail {
+  .container-carrousell {
+    width: 100%;
+    max-width: 92vw;
+    border: 2px solid rgb(229, 255, 0);
     display: flex;
     justify-content: center;
-    border: 3px solid pink;
-    height: 50vh;
-  }
+    align-items: center;
 
-  .image-detail img {
-    height: 100%;
-    width: 70%;
+    .carrousell {
+      border: 2px solid red;
+      width: 80%;
+    }
 
-    @media screen and (max-width: 768px) {
-        width: 100%;
+    .image-slick {
+      border: 2px solid blue;
+      max-height: 45vh;
+      width: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
 
+    .image-slick:hover {
+      transform: scale(1.1);
+    }
+
+    .slick-dots li button:before {
+      color: rgb(121, 117, 117) !important; /* Color de los puntos inactivos */
+      opacity: 1 !important; /* Asegura que siempre sea visible */
+      font-size: 7px; /* Opcional: ajusta el tamaño */
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: #0039b1 !important;
     }
   }
 

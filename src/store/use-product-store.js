@@ -1,205 +1,51 @@
 import { create } from "zustand";
-import axios from "axios"; // Si planeas obtener datos de una API
-import rossi from "../assets/rossi.png"
+import rossi from "../assets/rossi.png";
 
 export const useProductStore = create((set, get) => ({
-    
   products: [],
 
   fetchProducts: async () => {
     if (get().products.length > 0) {
-        console.log("segui de largo")
-         return; // Evita recargar datos si ya existen
+      console.log("segui de largo");
+      return; // Evita recargar datos si ya existen
     }
-       
 
     try {
-      // Simulación de una API, puedes reemplazarlo con axios.get("URL")
-      console.log("llame la api")
-      const products = [
-        {
-          id: 1,
-          brand: "Yamaha",
-          model: "Crypton FI",
-          category: "Frenos",
-          name: "Pastillas de freno delanteras",
-          oldPrice: 1000000,
-          price: 800000,
-          rating: 4,
-          image:rossi,
-          description: "Pastillas de freno de alto rendimiento para máxima seguridad y durabilidad."
-        },
-        {
-          id: 2,
-          brand: "Honda",
-          model: "CBR 500R",
-          category: "Aceites",
-          name: "Aceite sintético 10W-40",
-          oldPrice: 120,
-          price: 95,
-          rating: 5,
-          image: rossi,
-          description: "Aceite de motor sintético premium para máximo rendimiento y protección."
-        },
-        {
-          id: 3,
-          brand: "Suzuki",
-          model: "GSX-R750",
-          category: "Iluminación",
-          name: "Faro delantero LED",
-          oldPrice: 150,
-          price: 130,
-          rating: 4.5,
-          image: rossi,
-          description: "Faro LED de alta potencia para mayor visibilidad y seguridad."
-        },
-        {
-          id: 4,
-          brand: "Kawasaki",
-          model: "Ninja 650",
-          category: "Frenos",
-          name: "Disco de freno trasero",
-          oldPrice: 200,
-          price: 180,
-          rating: 4,
-          image: rossi,
-          description: "Disco de freno de acero inoxidable para una frenada precisa y confiable."
-        },
-        {
-          id: 5,
-          brand: "BMW",
-          model: "S1000RR",
-          category: "Accesorios",
-          name: "Manillar ajustable",
-          oldPrice: 180,
-          price: 160,
-          rating: 4.7,
-          image: rossi,
-          description: "Manillar ajustable ergonómico para mayor comodidad y control."
-        },
-        {
-          id: 6,
-          brand: "Ducati",
-          model: "Panigale V4",
-          category: "Escape",
-          name: "Escape deportivo Akrapovic",
-          oldPrice: 900,
-          price: 850,
-          rating: 5,
-          image: rossi,
-          description: "Escape de alto rendimiento con sonido agresivo y mejor flujo de gases."
-        },
-        {
-          id: 7,
-          brand: "Harley-Davidson",
-          model: "Street 750",
-          category: "Frenos",
-          name: "Líquido de frenos DOT4",
-          oldPrice: 30,
-          price: 25,
-          rating: 4.2,
-          image: rossi,
-          description: "Líquido de frenos de alto punto de ebullición para máxima seguridad."
-        },
-        {
-          id: 8,
-          brand: "Triumph",
-          model: "Speed Triple",
-          category: "Neumáticos",
-          name: "Neumático trasero 190/55ZR17",
-          oldPrice: 250,
-          price: 220,
-          rating: 4.8,
-          image: rossi,
-          description: "Neumático deportivo con excelente agarre y durabilidad."
-        },
-        {
-          id: 9,
-          brand: "Aprilia",
-          model: "RSV4",
-          category: "Suspensión",
-          name: "Horquilla delantera ajustable",
-          oldPrice: 600,
-          price: 550,
-          rating: 4.9,
-          image: rossi,
-          description: "Horquilla delantera con ajuste de compresión y rebote para mejor maniobrabilidad."
-        },
-        {
-          id: 10,
-          brand: "KTM",
-          model: "Duke 390",
-          category: "Accesorios",
-          name: "Cúpula parabrisas",
-          oldPrice: 90,
-          price: 75,
-          rating: 4.5,
-          image: rossi,
-          description: "Cúpula aerodinámica que reduce la resistencia al viento."
-        },
-        {
-          id: 11,
-          brand: "Yamaha",
-          model: "R1",
-          category: "Frenos",
-          name: "Disco de freno delantero",
-          oldPrice: 210,
-          price: 190,
-          rating: 4.6,
-          image: rossi,
-          description: "Disco de freno flotante con mejor disipación de calor."
-        },
-        {
-          id: 12,
-          brand: "Honda",
-          model: "Africa Twin",
-          category: "Suspensión",
-          name: "Amortiguador trasero ajustable",
-          oldPrice: 400,
-          price: 370,
-          rating: 4.7,
-          image: rossi,
-          description: "Amortiguador trasero con ajuste de precarga y rebote."
-        },
-        {
-          id: 13,
-          brand: "Suzuki",
-          model: "V-Strom 650",
-          category: "Accesorios",
-          name: "Top case Givi 47L",
-          oldPrice: 280,
-          price: 250,
-          rating: 4.8,
-          image: rossi,
-          description: "Top case espacioso para almacenamiento seguro en viajes largos."
-        },
-        {
-          id: 14,
-          brand: "Kawasaki",
-          model: "Z900",
-          category: "Escape",
-          name: "Escape Yoshimura R-77",
-          oldPrice: 750,
-          price: 700,
-          rating: 5,
-          image: rossi,
-          description: "Escape Yoshimura con diseño deportivo y sonido envolvente."
-        },
-        {
-          id: 15,
-          brand: "BMW",
-          model: "R 1250 GS",
-          category: "Iluminación",
-          name: "Luces auxiliares LED",
-          oldPrice: 200,
-          price: 180,
-          rating: 4.6,
-          image: rossi,
-          description: "Luces auxiliares LED para mayor visibilidad en rutas nocturnas."
-        }
+      console.log("llame la api");
+
+      // Datos base para generar productos aleatorios
+      const brands = ["Suzuki", "Kawasaki", "BMW", "Honda", "Yamaha", "Ducati"];
+      const models = ["V-Strom 650", "Z900", "R 1250 GS", "CBR600RR", "MT-09", "Panigale V4"];
+      const categories = ["Accesorios", "Escape", "Iluminación", "Neumáticos", "Suspensión", "Electrónica"];
+      const names = ["Top case Givi 47L", "Escape Yoshimura R-77", "Luces auxiliares LED", "Casco Shoei", "Llantas Michelin", "Amortiguadores Öhlins"];
+      const descriptions = [
+        "Producto de alta calidad para mejorar tu experiencia en la moto.",
+        "Ideal para largas rutas y mayor seguridad.",
+        "Mejora la estética y el rendimiento de tu moto.",
+        "Equipamiento premium para los más exigentes."
       ];
 
-      set({ products }); // Guardar en Zustand
+      // Función para generar un producto aleatorio
+      const generateRandomProduct = (id) => ({
+        id,
+        brand: brands[Math.floor(Math.random() * brands.length)],
+        model: models[Math.floor(Math.random() * models.length)],
+        category: categories[Math.floor(Math.random() * categories.length)],
+        name: names[Math.floor(Math.random() * names.length)],
+        oldPrice: Math.floor(Math.random() * 1000) + 100, // Precio antiguo aleatorio entre 100 y 1100
+        price: Math.floor(Math.random() * 900) + 100, // Precio actual aleatorio entre 100 y 1000
+        rating: (Math.random() * 2 + 3).toFixed(1), // Rating entre 3.0 y 5.0
+        image: rossi,
+        description: descriptions[Math.floor(Math.random() * descriptions.length)]
+      });
+
+      // Generar 1000 productos aleatorios
+      const products = Array.from({ length: 1000 }, (_, index) => generateRandomProduct(index + 1));
+
+      // Guardar en Zustand
+      set({ products });
+
+      console.log("Productos generados:", products.length);
     } catch (error) {
       console.error("Error cargando productos", error);
     }
