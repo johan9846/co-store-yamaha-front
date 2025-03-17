@@ -9,8 +9,7 @@ import { Badge } from "@mui/material";
 import "./Header.css";
 
 
-export const Header = ({ data }) => {
-
+export const Header = () => {
   const { productData} = useCartStore();
   return (
     <Container className="header-container">
@@ -26,7 +25,7 @@ export const Header = ({ data }) => {
               xxl={4}
               className="logo-header"
             >
-              <Link to="/">
+              <Link to="/home">
                 <div>
                   <img src={LogoLight} alt="LogoLight" />
                 </div>
@@ -46,7 +45,7 @@ export const Header = ({ data }) => {
               xxl={2}
               className="items-header"
             >
-              <Link to={"/"}>Home</Link>
+              <Link to={"/home"}>Home</Link>
               <Link to="/cart">
                 <Badge
                   badgeContent={productData.length}
@@ -80,7 +79,7 @@ export const Header = ({ data }) => {
           xxl={12}
           className="filter-input"
         >
-          <FilterInput data={data} />
+          <FilterInput  />
         </Col>
       </Row>
     </Container>

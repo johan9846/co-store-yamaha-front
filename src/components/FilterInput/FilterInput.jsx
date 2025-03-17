@@ -1,46 +1,78 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
-
+import { Row, Col, Button } from "react-bootstrap";
+import {
+  getAllBrands,
+  getModelsByBrand,
+  getCategoriesByBrandAndModel,
+} from "../../services/admin.services";
 import parts from "../../assets/parts.svg";
 import "./FilterInput.css";
 
-export const FilterInput = ({ data }) => {
+export const FilterInput = () => {
   const navigate = useNavigate();
 
-  // Estados para los filtros
+  // Estados para manejar las opciones y selecciones
+  const [brands, setBrands] = useState([]);
+  const [models, setModels] = useState([]);
+  const [categories, setCategories] = useState([]);
+
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Obtener marcas únicas
-  const brands = useMemo(() => {
-    return [...new Set(data.map((p) => p.brand))];
-  }, [data]);
+  // Obtener todas las brands al montar el componente
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await getAllBrands();
+        setBrands(response.data);
+      } catch (error) {
+        console.error("Error al obtener las brands:", error);
+      }
+    };
+    fetchBrands();
+  }, []);
 
-  // Obtener modelos únicos según la marca seleccionada
-  const models = useMemo(() => {
-    return selectedBrand
-      ? [
-          ...new Set(
-            data.filter((p) => p.brand === selectedBrand).map((p) => p.model)
-          ),
-        ]
-      : [];
-  }, [selectedBrand, data]);
+  // Obtener los modelos cuando se selecciona una brand
+  useEffect(() => {
+    if (selectedBrand) {
+      const fetchModels = async () => {
+        try {
+          const response = await getModelsByBrand(selectedBrand);
+          setModels(response.data);
+        } catch (error) {
+          console.error("Error al obtener los modelos:", error);
+        }
+      };
+      fetchModels();
+    } else {
+      setModels([]);
+    }
+    setSelectedModel("");
+    setSelectedCategory("");
+  }, [selectedBrand]);
 
-  // Obtener categorías únicas según marca y modelo seleccionados
-  const categories = useMemo(() => {
-    return selectedBrand && selectedModel
-      ? data
-          .filter((p) => p.brand === selectedBrand && p.model === selectedModel)
-          .map((p) => p.category) // Extraemos el objeto completo de categoría
-          .filter(
-            (value, index, self) =>
-              index === self.findIndex((cat) => cat.id === value.id)
-          ) // Filtrar duplicados basados en el id de la categoría
-      : [];
-  }, [selectedBrand, selectedModel, data]);
+  // Obtener las categorías cuando se seleccionan brand y model
+  useEffect(() => {
+    if (selectedBrand && selectedModel) {
+      const fetchCategories = async () => {
+        try {
+          const response = await getCategoriesByBrandAndModel(
+            selectedBrand,
+            selectedModel
+          );
+          setCategories(response.data);
+        } catch (error) {
+          console.error("Error al obtener las categorías:", error);
+        }
+      };
+      fetchCategories();
+    } else {
+      setCategories([]);
+    }
+    setSelectedCategory("");
+  }, [selectedBrand, selectedModel]);
 
   // Función para manejar la búsqueda
   const handleSearch = () => {
@@ -63,59 +95,51 @@ export const FilterInput = ({ data }) => {
         xxl={2}
         className="icon-filter mt-3 mt-md-0"
       >
-        <img src={parts} alt="" /> Buscar partes
+        <img src={parts} alt="parts icon" /> Buscar partes
       </Col>
 
+      {/* Select de Marca */}
       <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="mt-3">
-        {/* Select de Marca */}
-
         <select
           className="form-select"
           value={selectedBrand}
           onChange={(e) => {
             setSelectedBrand(e.target.value);
-            setSelectedModel(""); // Resetear modelo al cambiar marca
-            setSelectedCategory(""); // Resetear categoría
           }}
         >
           <option value="">Seleccione Marca</option>
           {brands.map((brand) => (
-            <option key={brand} value={brand}>
-              {brand}
+            <option key={brand.brand} value={brand.brand}>
+              {brand.brand}
             </option>
           ))}
         </select>
       </Col>
 
+      {/* Select de Modelo */}
       <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="mt-3">
-        {/* Select de Modelo */}
-
         <select
           className="form-select"
           value={selectedModel}
-          onChange={(e) => {
-            setSelectedModel(e.target.value);
-            setSelectedCategory(""); // Resetear categoría
-          }}
+          onChange={(e) => setSelectedModel(e.target.value)}
           disabled={!selectedBrand}
         >
           <option value="">Seleccione Modelo</option>
           {models.map((model) => (
-            <option key={model} value={model}>
-              {model}
+            <option key={model.model} value={model.model}>
+              {model.model}
             </option>
           ))}
         </select>
       </Col>
 
+      {/* Select de Categoría */}
       <Col xs={11} sm={11} md={2} lg={2} xl={3} xxl={3} className="mt-3">
-        {/* Select de Categoría */}
-
         <select
           className="form-select"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          disabled={!selectedBrand || !selectedModel}
+          disabled={!selectedModel}
         >
           <option value="">Seleccione Categoría</option>
           {categories.map((category) => (
@@ -126,8 +150,8 @@ export const FilterInput = ({ data }) => {
         </select>
       </Col>
 
-      <Col className=" mt-3 mb-3" xs={11} sm={11} md={2} lg={2} xl={1} xxl={1}>
-        {/* Botón de búsqueda */}
+      {/* Botón de búsqueda */}
+      <Col className="mt-3 mb-3" xs={11} sm={11} md={2} lg={2} xl={1} xxl={1}>
         <Button
           onClick={handleSearch}
           disabled={!selectedBrand || !selectedModel || !selectedCategory}

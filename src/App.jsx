@@ -17,11 +17,11 @@ import { FilterResult } from "./pages/FilterResult/FilterResult";
 import "./App.css";
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
-const Layout = ({ dataProduct }) => {
-  console.log("Data en Layout:", dataProduct); // Verificar si los datos llegan aquí
+const Layout = () => {
+
   return (
     <div>
-      <Header data={dataProduct} />
+      <Header  />
       <ScrollRestoration />
       <Outlet />
     </div>
@@ -60,10 +60,10 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout dataProduct={dataProduct} />, // Pasamos el estado como prop
+      element: <Layout/>, // Pasamos el estado como prop
       children: [
         {
-          path: "/",
+          path: "/home",
           element: <Home data={dataProduct} />,
         },
         {
