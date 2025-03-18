@@ -33,10 +33,10 @@ export const useCartStore = create(
 
       incrementQuantity: (id) =>
         set((state) => ({
-
-          
           productData: state.productData.map((item) =>
-            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+            item.id === id && item.quantity < item.quantity_stock
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
           ),
         })),
 

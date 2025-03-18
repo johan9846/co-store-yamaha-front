@@ -1,49 +1,63 @@
-import React, { useState, useMemo } from "react";
-import { useProductStore } from "../../store/use-product-store";
+import React, { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Autocomplete,
   TextField,
   InputAdornment,
-  Avatar,
-  Typography,
-  Box,
   IconButton,
   useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import "./InputSearch.css"; // Estilos
+import { getSearchProduct } from "../../services/admin.services";
+import debounce from "debounce";
+import "./InputSearch.css";
 
 const InputSearch = () => {
-  const { products } = useProductStore();
   const [search, setSearch] = useState("");
-  const [open, setOpen] = useState(false); // Estado para manejar apertura de la lista
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [open, setOpen] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const filteredProducts = useMemo(() => {
-    if (search.trim().length < 3) return [];
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, products]);
+  // Función de búsqueda con debounce de 500ms
+  const handleSearch = useCallback(
+    debounce(async (value) => {
+      if (value.trim().length >= 3) {
+        try {
+          const response = await getSearchProduct(value);
+          const products = response.data;
+          setFilteredProducts(products);
+          setOpen(true);
+        } catch (error) {
+          console.error("Error al buscar productos:", error);
+          setFilteredProducts([]);
+          setOpen(false);
+        }
+      } else {
+        setFilteredProducts([]);
+        setOpen(false);
+      }
+    }, 500), // Espera de 500 ms antes de ejecutar la búsqueda
+    []
+  );
 
-  const handleSearch = (event, value) => {
+  const handleInputChange = (event, value, reason) => {
     setSearch(value);
-    setOpen(value.trim().length >= 3 && filteredProducts.length > 0);
+
+    // Solo busca cuando se escribe manualmente y aplica debounce
+    if (reason === "input") {
+      handleSearch(value);
+    }
   };
 
   const handleDetails = (event, product) => {
-    if (!product) return;
-    
-    navigate(`/product/${product.id}`, {
-      state: { item: product },
-    });
-
-    setOpen(false); // Cerrar la lista después de seleccionar
-    setSearch("");
+    if (product) {
+      navigate(`/product/${product.id}`);
+    }
+    setOpen(false);
+    setSearch(product.name); // Establece el nombre del producto seleccionado
   };
 
   const handleClose = () => {
@@ -59,55 +73,72 @@ const InputSearch = () => {
         </div>
       ) : (
         <Autocomplete
-          options={filteredProducts}
-          getOptionLabel={(option) => option.name}
-          open={open} // Controlar apertura manualmente
-          onInputChange={handleSearch}
-          onChange={handleDetails}
-          inputValue={search}
-          onBlur={() => setOpen(false)} // Cerrar la lista si se pierde el foco
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              placeholder="Buscar producto..."
-              className={isMobile ? "textFieldMobile" : "textField"}
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleClose}>
-                      <CloseIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
+        options={filteredProducts}
+        getOptionLabel={(option) => option.name}
+        open={open}
+        className={isMobile ? "textFieldMobile" : "textField"}
+        onInputChange={handleInputChange}
+        onChange={handleDetails}
+        inputValue={search}
+        onBlur={() => setOpen(false)}
+        onClose={() => setOpen(false)}
+        noOptionsText="No hay opciones disponibles"
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            placeholder="Buscar producto..."
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClose}>
+                    <CloseIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            autoFocus
+          />
+        )}
+        renderOption={(props, product) => (
+          <li
+            {...props}
+            key={product.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "10px 20px",
+              borderBottom: "1px solid #ddd",
+            }}
+          >
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "4px",
+                objectFit: "cover",
               }}
-              autoFocus
             />
-          )}
-          renderOption={(props, product, state) => (
-            <li {...props} className={`listItem ${props.className}`} key={product.id} style={{ display: 'flex', padding: '10px 20px', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
-            {/*   <div style={{ fontWeight: 'bold', marginRight: '8px' }}>{state.index + 1}.</div> */}
-              <img src={product.image} alt={product.name} style={{ width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover' }} />
-              <div style={{ marginLeft: '12px', flexGrow: 1, paddingRight:"10px" }}>
-                <div style={{ fontSize: '14px', fontWeight: '500' }}>{product.name}</div>
-                <div style={{ fontSize: '12px', color: '#777' }}>
-                  {product.brand} - {product.model}
-                </div>
+            <div style={{ marginLeft: "12px", flexGrow: 1 }}>
+              <div style={{ fontWeight: "500" }}>{product.name}</div>
+              <div style={{ fontSize: "12px", color: "#777" }}>
+                {product.brand} - {product.model}
               </div>
-              <div style={{ fontSize: '14px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>
-                ${product.price}
-              </div>
-            </li>
-          )}
-          
-          
-        />
+            </div>
+            <div style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+              ${product.price}
+            </div>
+          </li>
+        )}
+      />
       )}
     </div>
   );

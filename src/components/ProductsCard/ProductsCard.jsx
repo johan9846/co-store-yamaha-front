@@ -88,10 +88,11 @@ export const ProductsCard = ({ product }) => {
               id: product.id,
               brand: product.brand,
               model: product.model,
-              category: product.category,
+              category: product.category.name,
               name: product.name,
-              image: product.image,
+              images: product.images,
               price: product.price,
+              quantity_stock:product.quantity_stock,
               quantity: 1,
               description: product.description,
             });

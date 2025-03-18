@@ -16,6 +16,7 @@
     "@mui/material": "^6.4.6",
     "axios": "^1.8.3",
     "bootstrap": "^5.3.3",
+    "debounce": "^2.2.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",

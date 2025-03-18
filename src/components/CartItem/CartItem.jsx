@@ -2,10 +2,24 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { useCartStore } from "../../store/use-cart-store";
 import { Container, Row, Col } from "react-bootstrap";
-import "./CartItem.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useMemo, useState } from "react";
+import "./CartItem.css";
 
 export const CartItem = () => {
+  const carouselSettings = {
+    dots: true, // Muestra puntos de navegación
+    infinite: true, // Permite navegación infinita
+    speed: 1000, // Velocidad de transición
+    autoplay: false,
+    autoplaySpeed: 2000,
+    slidesToShow: 1, // Muestra una imagen a la vez
+    slidesToScroll: 1, // Avanza de una en una
+    arrows: false, // Muestra flechas de navegación
+  };
+
   const [totalAmount, setTotalAmount] = useState("");
   const {
     productData,
@@ -52,12 +66,27 @@ export const CartItem = () => {
                 </Col>
 
                 <Col className="image-cart">
+                  <div className="container-carrousell">
+                    <Slider {...carouselSettings} className="carrousell">
+                      {item.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Imagen ${index + 1}`}
+                          className="image-slick"
+                        />
+                      ))}
+                    </Slider>
+                  </div>
+
                   <img src={item.image} alt="" className="image-cart" />
                 </Col>
 
                 <Col className="title-product">
-                <div>{item.name} </div>
-                <div className="mt-2">{item.brand}-{item.model}</div>
+                  <div>{item.name} </div>
+                  <div className="mt-2">
+                    {item.brand}-{item.model}
+                  </div>
                 </Col>
 
                 <Col className="container-amount">

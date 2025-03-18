@@ -28,7 +28,7 @@ export const Product = () => {
 
   useEffect(() => {
     getProdctId(id);
-  }, [getProdctId]);
+  }, [getProdctId, id]);
 
   if (loading) return <p>Cargando...</p>;
   return (

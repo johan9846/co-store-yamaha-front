@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./DetailProduct.css";
 
 export const DetailProduct = ({ details }) => {
+  console.log(details, "detalels");
   const carouselSettings = {
     dots: true, // Muestra puntos de navegación
     infinite: true, // Permite navegación infinita
@@ -93,7 +94,11 @@ export const DetailProduct = ({ details }) => {
 
                     <div
                       className="button-amount"
-                      onClick={() => setBaseQty(baseQty + 1)}
+                      onClick={() => {
+                        if (baseQty < details.quantity_stock) {
+                          setBaseQty(baseQty + 1);
+                        }
+                      }}
                     >
                       +
                     </div>
@@ -101,26 +106,31 @@ export const DetailProduct = ({ details }) => {
 
                   <button
                     className="button-add"
-                    onClick={() =>
+                    onClick={() => {
                       addToCart({
                         id: details.id,
                         brand: details.brand,
                         model: details.model,
-                        category: details.category,
+                        category: details.category.name,
                         name: details.name,
-                        image: details.image,
+                        images: details.images,
                         price: details.price,
                         quantity: baseQty,
+                        quantity_stock:details.quantity_stock,
                         description: details.description,
-                      }) && toast.success(`${details.title} is added`)
-                    }
+                      });
+
+                      setTimeout(() => {
+                        toast.success(`${details.name} is added`);
+                      }, 50);
+                    }}
                   >
                     Añadir al Carrito
                   </button>
                 </div>
 
                 <p className="mt-4">
-                  Categoria: <span>{details.category}</span>
+                  Categoria: <span>{details.category.name}</span>
                 </p>
               </Col>
             </Row>
