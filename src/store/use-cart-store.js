@@ -10,18 +10,26 @@ export const useCartStore = create(
       addToCart: (product) =>
         set((state) => {
           const existingItem = state.productData.find((item) => item.id === product.id);
-
+      
           if (existingItem) {
+            const newQuantity = Math.min(
+              existingItem.quantity + (product.quantity),
+              existingItem.quantity_stock
+            );
+      
             return {
               productData: state.productData.map((item) =>
-                item.id === product.id
-                  ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-                  : item
+                item.id === product.id ? { ...item, quantity: newQuantity } : item
               ),
             };
           }
-
-          return { productData: [...state.productData, { ...product, quantity: product.quantity || 1 }] };
+      
+          return {
+            productData: [
+              ...state.productData,
+              { ...product, quantity: Math.min(product.quantity, product.quantity_stock) },
+            ],
+          };
         }),
 
       deleteFromCart: (id) =>
@@ -53,7 +61,7 @@ export const useCartStore = create(
     }),
     {
       name: "bazar-storage",
-      getStorage: () => localStorage, // Asegura que se usa localStorage correctamente
+      getStorage: () => sessionStorage, // Asegura que se usa localStorage correctamente
     }
   )
 );

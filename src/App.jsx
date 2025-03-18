@@ -5,6 +5,7 @@ import { Product } from "./pages/product/product";
 import { getAllProduct } from "./services/admin.services";
 import {
   createBrowserRouter,
+  Navigate,
   Outlet,
   RouterProvider,
   ScrollRestoration,
@@ -60,31 +61,36 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout/>, // Pasamos el estado como prop
+      element: <Layout />,
       children: [
         {
-          path: "/home",
+          path: "/",
+          element: <Navigate to="/home" replace />, // Redirección inicial a /home
+        },
+        {
+          path: "home",
           element: <Home data={dataProduct} />,
         },
         {
-          path: "/product/:id",
+          path: "product/:id",
           element: <Product />,
         },
         {
-          path: "/products/filter", // Ruta para la búsqueda filtrada
+          path: "products/filter",
           element: <FilterResult />,
         },
         {
-          path: "/cart",
+          path: "cart",
           element: <Cart />,
         },
         {
-          path: "/search", // Ruta para resultados de búsqueda
+          path: "search",
           element: <SearchResults />,
         },
       ],
     },
   ]);
+  
 
   return (
     <div className="app">

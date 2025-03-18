@@ -83,7 +83,7 @@ export const ProductsCard = ({ product }) => {
       <div className="mt-2">{description}</div>
       <div className="mt-2">
         <button
-          onClick={() => {
+           onClick={() => {
             addToCart({
               id: product.id,
               brand: product.brand,
@@ -92,15 +92,19 @@ export const ProductsCard = ({ product }) => {
               name: product.name,
               images: product.images,
               price: product.price,
-              quantity_stock:product.quantity_stock,
+              quantity_stock: product.quantity_stock,
               quantity: 1,
               description: product.description,
             });
-
+        
             setTimeout(() => {
               toast.success(`${product.name} is added`);
             }, 50);
           }}
+          disabled={
+            useCartStore.getState().productData.find((item) => item.id === product.id)?.quantity >=
+            product.quantity_stock
+          }
         >
           Agregar al Carrito
         </button>

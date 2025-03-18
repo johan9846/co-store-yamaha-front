@@ -49,7 +49,7 @@ export const DetailProduct = ({ details }) => {
                 <div className="container-carrousell">
                   <Slider {...carouselSettings} className="carrousell">
                     {details.images.map((image, index) => (
-                      <img src={image} className="image-slick" />
+                      <img src={image} className="image-slick" key={index} />
                     ))}
                   </Slider>
                 </div>
@@ -95,7 +95,20 @@ export const DetailProduct = ({ details }) => {
                     <div
                       className="button-amount"
                       onClick={() => {
-                        if (baseQty < details.quantity_stock) {
+                        // Obtenemos la cantidad del producto en el carrito
+                        const productInCart = useCartStore
+                          .getState()
+                          .productData.find((item) => item.id === details.id);
+
+                        const cartQuantity = productInCart
+                          ? productInCart.quantity
+                          : 0;
+
+                        // Verificamos ambas condiciones antes de incrementar la cantidad
+                        if (
+                          baseQty < details.quantity_stock &&
+                          baseQty < details.quantity_stock - cartQuantity
+                        ) {
                           setBaseQty(baseQty + 1);
                         }
                       }}
@@ -116,7 +129,7 @@ export const DetailProduct = ({ details }) => {
                         images: details.images,
                         price: details.price,
                         quantity: baseQty,
-                        quantity_stock:details.quantity_stock,
+                        quantity_stock: details.quantity_stock,
                         description: details.description,
                       });
 
@@ -124,6 +137,13 @@ export const DetailProduct = ({ details }) => {
                         toast.success(`${details.name} is added`);
                       }, 50);
                     }}
+                    disabled={
+                      baseQty >= details.quantity_stock ||
+                      useCartStore
+                        .getState()
+                        .productData.find((item) => item.id === details.id)
+                        ?.quantity >= details.quantity_stock
+                    }
                   >
                     Añadir al Carrito
                   </button>
