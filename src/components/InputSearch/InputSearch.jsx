@@ -57,7 +57,8 @@ const InputSearch = () => {
 
   const handleDetails = (event, product) => {
     if (product) {
-      navigate(`/product/${product.id}`);
+  
+      navigate(`/home/repuestos/product/${product.id}`)
     }
     setOpen(false);
     setSearch(product?.name || "");

@@ -10,10 +10,13 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+
 import "./DetailProduct.css";
 
 export const DetailProduct = ({ details }) => {
-  console.log(details, "detalels");
+  console.log(details , "detalels");
   const carouselSettings = {
     dots: true, // Muestra puntos de navegación
     infinite: true, // Permite navegación infinita
@@ -42,6 +45,24 @@ export const DetailProduct = ({ details }) => {
   return (
     <>
       <Container className="container-products-detail mt-4">
+
+         <Breadcrumbs aria-label="breadcrumb">
+          <Link underline="hover" href="/home">
+            Home
+          </Link>
+          <Link underline="hover" href="/home/repuestos">
+            Repuestos
+          </Link>
+
+          <Link
+            underline="hover"
+            href={`/home/repuestos/${details.category_id }`}
+          >
+            {details.category.name }
+          </Link>
+          <span>{details.name}</span>
+        </Breadcrumbs> 
+
         <Row>
           <Col>
             <Row style={{ border: "2px solid green " }}>

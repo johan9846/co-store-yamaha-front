@@ -44,7 +44,7 @@ export const Repuestos = ({ data }) => {
 
   const handleCategoryClick = (categoryId) => {
     // Navegamos a la ruta correspondiente cuando se selecciona una categoría
-    navigate(`/repuestos/${categoryId}`);
+    navigate(`/home/repuestos/${categoryId}`);
   };
 
   return (

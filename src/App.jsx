@@ -18,7 +18,6 @@ import { Repuestos } from "./pages/Repuestos/Repuestos";
 import "./App.css";
 import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategoria";
 
-
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
   return (
@@ -67,14 +66,8 @@ function App() {
           path: "/",
           element: <Navigate to="/home" replace />, // Redirección inicial a /home
         },
-        {
-          path: "home",
-          element: <Home />,
-        },
-        {
-          path: "product/:id",
-          element: <Product />,
-        },
+
+       
         {
           path: "products/filter",
           element: <FilterResult />,
@@ -88,23 +81,25 @@ function App() {
           element: <SearchResults />,
         },
 
-
-
-
-
         {
-          path: "repuestos",
-          element: <Repuestos data={dataProduct} />,
+          path: "home",
+          element: <Home />,
         },
 
+        {
+          path: "home/repuestos",
+          element: <Repuestos data={dataProduct} replace />,
+        },
 
         {
-          path: "/repuestos/:id",
-          element: <RepuestosCategoria />,
-        },
-         
-         
+          path: "home/repuestos/:id",
+          element: <RepuestosCategoria replace />,
+        }, 
         
+        {
+          path: "home/repuestos/product/:id",
+          element: <Product />,
+        },
       ],
     },
   ]);

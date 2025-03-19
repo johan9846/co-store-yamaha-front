@@ -9,8 +9,8 @@ export const Home = () => {
   const navigate = useNavigate();
 
   const categories = [
-    { name: "Repuestos", image: repuestos, path: "/repuestos" },
-    { name: "Moda", image: moda, path: "/moda" },
+    { name: "Repuestos", image: repuestos, path: "/home/repuestos" },
+    { name: "Moda", image: moda, path: "/home/moda" },
   ];
 
   return (

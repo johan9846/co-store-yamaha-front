@@ -42,9 +42,7 @@ export const ProductsCard = ({ product }) => {
 
 
   const handleDetails = () => {
-    navigate(`/product/${id}`, {
-    
-    });
+    navigate(`/home/repuestos/product/${id}`)
   };
 
   return (
