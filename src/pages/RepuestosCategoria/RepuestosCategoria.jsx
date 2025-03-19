@@ -13,6 +13,8 @@ export const RepuestosCategoria = () => {
   const { id } = useParams();
   const [dataCategories, setDataCategories] = useState([]);
 
+
+  // Productos que tiene la categoria seleccionada 2
   const getCategoriesProducts = useCallback(async (id) => {
     try {
       const { data } = await getAllCategorieId(id);

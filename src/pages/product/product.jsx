@@ -11,7 +11,9 @@ export const Product = () => {
   const [details, setDetails] = useState([]);
 
   const [loading, setLoading] = useState(true);
+    
 
+  // detalle del producto dependiendo del id del producto 3 
   const getProdctId = useCallback(async (id) => {
     try {
       const { data } = await getAllProductId(id);

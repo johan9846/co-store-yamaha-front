@@ -24,6 +24,8 @@ export const Repuestos = ({ data }) => {
     "Llantas": llantas
   };
 
+
+  /// categorias de productos que hay 1
   const getCategories = useCallback(async () => {
     try {
       const { data } = await getAllCategories();

@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import { Container, Row, Col } from "react-bootstrap";
 
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+
 import "./FilterResult.css";
 
 export const FilterResult = () => {
@@ -21,7 +24,7 @@ export const FilterResult = () => {
   const getProductFilter = useCallback(async (brand, model, category_id) => {
     try {
       const { data } = await getFilterProduct(brand, model, category_id);
-      console.log(data);
+      console.log(data, "filterResult");
       setDetails(data);
     } catch (error) {
       console.error("Error fetching:", error);
@@ -38,6 +41,16 @@ export const FilterResult = () => {
 
   return (
     <Container className="mt-4">
+      <Breadcrumbs aria-label="breadcrumb">
+        <Link underline="hover" href="/home">
+          Home
+        </Link>
+        <Link underline="hover" href="/home/repuestos">
+          Repuestos
+        </Link>
+        <span>{details[0]?.category.name}</span>
+      </Breadcrumbs>
+
       <Row style={{ border: "2px solid black" }}>
         {details.map((item) => (
           <Col
