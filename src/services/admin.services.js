@@ -7,6 +7,18 @@ export const getAllCategories = async () => {
   return Axios.get(`${apiUrl}/categories/allCategories`);
 };
 
+export const getAllCategorieId = async (id) => {
+  return Axios.get(`${apiUrl}/categories/${id}/products`);
+};
+
+
+
+
+
+
+
+
+
 //productos
 
 export const getAllProduct = async () => {

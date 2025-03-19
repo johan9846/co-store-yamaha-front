@@ -47,9 +47,9 @@ export const CartItem = () => {
         </div>
 
         <Row>
-          <Col xs={12} sm={12} md={7} lg={7} xl={7} xxl={7}>
+          <Col xs={12} sm={12} md={7} lg={7} xl={7} xxl={7} className="mt-3">
             {productData.map((item, key) => (
-              <Row className="mt-3" key={key}>
+              <Row className="mt-5" key={key}>
                 <Col
                   xs={1}
                   sm={1}
@@ -115,7 +115,7 @@ export const CartItem = () => {
             ))}
           </Col>
 
-          <Col className="tarjet-pay">
+          <Col className="tarjet-pay mt-3">
             <Row className="justify-content-center">
               <Col xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
                 <h2>Total</h2>

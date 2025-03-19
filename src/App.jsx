@@ -14,15 +14,16 @@ import { Header } from "./components/Header/Header";
 
 import { SearchResults } from "./pages/SearchResults/SearchResults ";
 import { FilterResult } from "./pages/FilterResult/FilterResult";
-
+import { Repuestos } from "./pages/Repuestos/Repuestos";
 import "./App.css";
+import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategoria";
+
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
-
   return (
     <div>
-      <Header  />
+      <Header />
       <ScrollRestoration />
       <Outlet />
     </div>
@@ -49,14 +50,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("productooooooossss")
+    console.log("productooooooossss");
     getProducts();
   }, [getProducts]);
 
   if (dataProduct.length === 0) {
     return <p>Cargando productos...</p>;
   }
-
 
   const router = createBrowserRouter([
     {
@@ -69,7 +69,7 @@ function App() {
         },
         {
           path: "home",
-          element: <Home data={dataProduct} />,
+          element: <Home />,
         },
         {
           path: "product/:id",
@@ -87,10 +87,27 @@ function App() {
           path: "search",
           element: <SearchResults />,
         },
+
+
+
+
+
+        {
+          path: "repuestos",
+          element: <Repuestos data={dataProduct} />,
+        },
+
+
+        {
+          path: "/repuestos/:id",
+          element: <RepuestosCategoria />,
+        },
+         
+         
+        
       ],
     },
   ]);
-  
 
   return (
     <div className="app">

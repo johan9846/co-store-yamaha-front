@@ -1,0 +1,46 @@
+.title-repuestos{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.image-repuestos{
+    width: 100%;
+}
+
+
+.container-option{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+}
+.option-category{
+     
+    width: 170px;
+    height: 212px;
+
+    border: 2px solid rgb(167, 167, 167);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.image-option{
+    width: 120px;
+    height: 120px;
+}
+
+
+.option-category:hover .image-option {
+    width: 150px;
+    height: 150px;
+    
+  }
+  

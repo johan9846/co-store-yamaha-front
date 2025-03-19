@@ -1,31 +1,40 @@
-import { useCallback, useEffect, useState } from "react";
-
-import { useLoaderData } from "react-router-dom";
-import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { useProductStore } from "../../store/use-product-store";
+import logoHome from "../../assets/image-home.webp";
+import repuestos from "../../assets/repuestos.webp";
+import moda from "../../assets/moda.jpg";
+import "./Home.css";
 
+export const Home = () => {
+  const navigate = useNavigate();
 
-
-export const Home = ({data}) => {
-
-/*   const [products, setProducts] = useState([]);
-  const data = useLoaderData();
-
-  useEffect(() => {
-    setProducts(data);
-  }, [data]);
- */
+  const categories = [
+    { name: "Repuestos", image: repuestos, path: "/repuestos" },
+    { name: "Moda", image: moda, path: "/moda" },
+  ];
 
   return (
-    <Container className="mt-4">
-      <Row style={{border:"2px solid black"}} >
-        {data.map((item, key) => (
-          <Col xs={12} sm={12} md={4} lg={4} xl={3} xxl={3} className="px-3 mt-4"  key={item.id} style={{border:"2px solid green"}} >
-            <ProductsCard product={item} key={key} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      <img src={logoHome} className="image-banner" />
+      <Container fluid className="mt-4">
+        <Row>
+          <Col className="title-home">Explora nuestras categorías</Col>
+        </Row>
+
+        <Row className="container-card mt-4 mb-4">
+          {categories.map((category, index) => (
+            <Col xs={5} sm={5} md={4} lg={4} xl={3} xxl={3} key={index}>
+              <div
+                className="tarjet-home"
+                style={{ backgroundImage: `url(${category.image})` }}
+                onClick={() => navigate(category.path)} // Navegación correcta
+              >
+                <div className="text-home">{category.name}</div>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </>
   );
 };

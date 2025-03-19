@@ -1,7 +1,7 @@
 .container-cart-item {
   max-width: 100% !important;
 
-
+   padding: 0 20px;
 
   .detele-item-cart {
     display: flex;
