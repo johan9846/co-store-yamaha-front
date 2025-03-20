@@ -29,8 +29,13 @@ const InputSearch = () => {
       if (value.trim().length >= 3) {
         setIsLoading(true);
         try {
-          const response = await getSearchProduct(value);
-          setFilteredProducts(response.data);
+          const { data } = await getSearchProduct(value);
+        
+          const filterData = data.filter(
+            (product) => product.category?.status === "Activo"
+          );
+      
+          setFilteredProducts(filterData);
           setOpen(true);
         } catch (error) {
           console.error("Error al buscar productos:", error);
@@ -57,8 +62,7 @@ const InputSearch = () => {
 
   const handleDetails = (event, product) => {
     if (product) {
-  
-      navigate(`/home/repuestos/product/${product.id}`)
+      navigate(`/home/repuestos/product/${product.id}`);
     }
     setOpen(false);
     setSearch(product?.name || "");
@@ -77,81 +81,90 @@ const InputSearch = () => {
         </div>
       ) : (
         <Autocomplete
-        options={filteredProducts}
-        open={open}
-        loading={isLoading}
-        className={isMobile ? "textFieldMobile" : "textField"}
-        onInputChange={handleInputChange}
-        onChange={handleDetails}
-        inputValue={search}
-        onBlur={() => setOpen(false)}
-        onClose={() => setOpen(false)}
-        noOptionsText="No hay opciones disponibles"
-        loadingText="Cargando opciones..."
-        getOptionLabel={(option) => option.name || ""}
-        filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            placeholder="Buscar producto..."
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <>
-                  {isLoading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClose}>
-                        <CloseIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  )}
-                </>
-              ),
-            }}
-            autoFocus
-          />
-        )}
-        renderOption={(props, product) => (
-          <div
-            {...props}
-            key={product.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 20px",
-              borderBottom: "1px solid #ddd",
-            }}
-          >
-            <img
-                src={product.images[0]}
-              alt={product.name}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "4px",
-                objectFit: "cover",
+          options={filteredProducts}
+          open={open}
+          loading={isLoading}
+          className={isMobile ? "textFieldMobile" : "textField"}
+          onInputChange={handleInputChange}
+          onChange={handleDetails}
+          inputValue={search}
+          onBlur={() => setOpen(false)}
+          onClose={() => setOpen(false)}
+          noOptionsText="No hay opciones disponibles"
+          loadingText="Cargando opciones..."
+          getOptionLabel={(option) => option.name || ""}
+          filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              placeholder="Buscar producto..."
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <>
+                    {isLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClose}>
+                          <CloseIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    )}
+                  </>
+                ),
               }}
+              autoFocus
             />
-            <div style={{ marginLeft: "12px", flexGrow: 1 }}>
-              <div style={{ fontWeight: "500" }}>{product.name}</div>
-              <div style={{ fontSize: "12px", color: "#777"}}>
-                {product.brands.map((brand) => brand.name).join(", ")} - {product.brands.map((brand) => brand.models.join(", ")).join(" | ")}
+          )}
+          renderOption={(props, product) => (
+            <div
+              {...props}
+              key={product.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 20px",
+                borderBottom: "1px solid #ddd",
+              }}
+            >
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "4px",
+                  objectFit: "cover",
+                }}
+              />
+              <div style={{ marginLeft: "12px", flexGrow: 1 }}>
+                <div style={{ fontWeight: "500" }}>{product.name}</div>
+                <div style={{ fontSize: "12px", color: "#777" }}>
+                  {product.brands.map((brand) => brand.name).join(", ")} -{" "}
+                  {product.brands
+                    .map((brand) => brand.models.join(", "))
+                    .join(" | ")}
+                </div>
+              </div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                  paddingLeft: "10px",
+                }}
+              >
+                ${product.price}
               </div>
             </div>
-            <div style={{ fontWeight: "bold", whiteSpace: "nowrap",   paddingLeft: "10px",}}>
-              ${product.price}
-            </div>
-          </div>
-        )}
-      />
+          )}
+        />
       )}
     </div>
   );

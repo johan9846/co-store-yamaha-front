@@ -41,9 +41,10 @@ export const FilterInput = () => {
         try {
           const response = await getModelsByBrand(selectedBrand);
 
+          const uniqueModels = [
+            ...new Set(response.data.flatMap((item) => item.models)),
+          ];
 
-          const uniqueModels = [...new Set(response.data.flatMap(item => item.models))];
-          console.log(uniqueModels, "uniqueModels")
           setModels(uniqueModels);
         } catch (error) {
           console.error("Error al obtener los modelos:", error);
@@ -62,11 +63,15 @@ export const FilterInput = () => {
     if (selectedBrand && selectedModel) {
       const fetchCategories = async () => {
         try {
-          const response = await getCategoriesByBrandAndModel(
+          const { data } = await getCategoriesByBrandAndModel(
             selectedBrand,
             selectedModel
           );
-          setCategories(response.data);
+          console.log(data, "responsee");
+          const filterData = data.filter(
+            (category) => category.status === "Activo"
+          );
+          setCategories(filterData);
         } catch (error) {
           console.error("Error al obtener las categorías:", error);
         }
@@ -87,7 +92,7 @@ export const FilterInput = () => {
     setSelectedModel("");
     setSelectedCategory("");
   };
-console.log(brands, "brands")
+
   return (
     <Row style={{ width: "100%" }} className="d-flex justify-content-center">
       <Col
