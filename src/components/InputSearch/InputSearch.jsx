@@ -142,11 +142,11 @@ const InputSearch = () => {
             />
             <div style={{ marginLeft: "12px", flexGrow: 1 }}>
               <div style={{ fontWeight: "500" }}>{product.name}</div>
-              <div style={{ fontSize: "12px", color: "#777" }}>
-                {product.brand} - {product.model}
+              <div style={{ fontSize: "12px", color: "#777"}}>
+                {product.brands.map((brand) => brand.name).join(", ")} - {product.brands.map((brand) => brand.models.join(", ")).join(" | ")}
               </div>
             </div>
-            <div style={{ fontWeight: "bold", whiteSpace: "nowrap" }}>
+            <div style={{ fontWeight: "bold", whiteSpace: "nowrap",   paddingLeft: "10px",}}>
               ${product.price}
             </div>
           </div>

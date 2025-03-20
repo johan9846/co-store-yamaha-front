@@ -85,7 +85,8 @@ export const CartItem = () => {
                 <Col className="title-product">
                   <div>{item.name} </div>
                   <div className="mt-2">
-                    {item.brand}-{item.model}
+          
+                    {item.brands.map((brand) => brand.name).join(", ")} - {item.brands.map((brand) => brand.models.join(", ")).join(" | ")}
                   </div>
                 </Col>
 

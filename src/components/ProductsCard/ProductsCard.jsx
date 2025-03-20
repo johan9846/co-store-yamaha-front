@@ -25,8 +25,7 @@ export const ProductsCard = ({ product }) => {
 
   const {
     id,
-    brand,
-    model,
+    brands,
     category,
     name,
     oldPrice,
@@ -75,7 +74,8 @@ export const ProductsCard = ({ product }) => {
       </div>
 
       <div className="mt-3">
-        {brand} - {model}
+        {brands.map((brand) => brand.name).join(", ")} - {brands.map((brand) => brand.models.join(", ")).join(" | ")}
+                    
       </div>
 
       <div className="mt-2">{description}</div>
@@ -84,8 +84,7 @@ export const ProductsCard = ({ product }) => {
            onClick={() => {
             addToCart({
               id: product.id,
-              brand: product.brand,
-              model: product.model,
+              brands:product.brands,
               category: product.category.name,
               name: product.name,
               images: product.images,

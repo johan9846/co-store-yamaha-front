@@ -96,7 +96,7 @@ export const DetailProduct = ({ details }) => {
 
                 <div className="d-flex mt-3">
                   <div>
-                    {details.brand} - {details.model}
+                  {details.brands.map((brand) => brand.name).join(", ")} - {details.brands.map((brand) => brand.models.join(", ")).join(" | ")}
                   </div>
                 </div>
 
@@ -143,8 +143,7 @@ export const DetailProduct = ({ details }) => {
                     onClick={() => {
                       addToCart({
                         id: details.id,
-                        brand: details.brand,
-                        model: details.model,
+                        brands:details.brands,
                         category: details.category.name,
                         name: details.name,
                         images: details.images,

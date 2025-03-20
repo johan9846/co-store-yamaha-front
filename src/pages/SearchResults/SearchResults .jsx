@@ -24,6 +24,7 @@ export const SearchResults = () => {
   return (
     <Container>
       <h2>Resultados de Búsqueda</h2>
+      ajkdfhasjkdhasjashdjkasdhjkadhajkdhadjk
       <Row style={{ border: "2px solid black" }} className="mt-4">
         {filteredProducts.map((item) => (
           <Col xs={12} sm={10} md={4} lg={4} xl={3} xxl={3} className="px-3" key={item.id}>

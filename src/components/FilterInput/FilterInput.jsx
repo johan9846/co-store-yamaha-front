@@ -40,7 +40,11 @@ export const FilterInput = () => {
       const fetchModels = async () => {
         try {
           const response = await getModelsByBrand(selectedBrand);
-          setModels(response.data);
+
+
+          const uniqueModels = [...new Set(response.data.flatMap(item => item.models))];
+          console.log(uniqueModels, "uniqueModels")
+          setModels(uniqueModels);
         } catch (error) {
           console.error("Error al obtener los modelos:", error);
         }
@@ -83,7 +87,7 @@ export const FilterInput = () => {
     setSelectedModel("");
     setSelectedCategory("");
   };
-
+console.log(brands, "brands")
   return (
     <Row style={{ width: "100%" }} className="d-flex justify-content-center">
       <Col
@@ -109,8 +113,8 @@ export const FilterInput = () => {
         >
           <option value="">Seleccione Marca</option>
           {brands.map((brand) => (
-            <option key={brand.brand} value={brand.brand}>
-              {brand.brand}
+            <option key={brand.id} value={brand.name}>
+              {brand.name}
             </option>
           ))}
         </select>
@@ -125,9 +129,9 @@ export const FilterInput = () => {
           disabled={!selectedBrand}
         >
           <option value="">Seleccione Modelo</option>
-          {models.map((model) => (
-            <option key={model.model} value={model.model}>
-              {model.model}
+          {models.map((model, index) => (
+            <option key={index} value={model}>
+              {model}
             </option>
           ))}
         </select>
