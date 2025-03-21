@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Autocomplete,
@@ -15,6 +15,8 @@ import debounce from "debounce";
 import "./InputSearch.css";
 
 const InputSearch = () => {
+  const inputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
   const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [open, setOpen] = useState(false);
@@ -71,104 +73,131 @@ const InputSearch = () => {
   const handleClose = () => {
     setOpen(false);
     setSearch("");
+    setIsFocused(false);
+  
+    // Retrasar el blur para evitar que Autocomplete recupere el foco
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.blur();
+      }
+    }, 500);
   };
 
   return (
-    <div className="container-input-search">
-      <Autocomplete
-        sx={{
-          "& .MuiOutlinedInput-root": {
+    <div>
 
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderWidth: "2px", // Grosor del borde por defecto
-            
+    
+      {isFocused && (
+        <div className="search-overlay" onClick={handleClose}></div>
+      )}
+
+      {/* Fondo oscuro cuando hay resultados */}
+      <div className="container-input-search">
+        <Autocomplete
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white",
+
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderWidth: "2px", // Grosor del borde por defecto
+              },
+              position: (isFocused && isMobile)? "fixed" : "relative", // Fija la posición cuando está en foco
+              width: (isFocused && isMobile) ?  "85vw" : "100%",
             },
-          },
-        }}
-        fullWidth
-        options={filteredProducts}
-        open={open}
-        loading={isLoading}
-        onInputChange={handleInputChange}
-        onChange={handleDetails}
-        inputValue={search}
-        onBlur={() => setOpen(false)}
-        onClose={() => setOpen(false)}
-        noOptionsText="No hay opciones disponibles"
-        loadingText="Cargando opciones..."
-        getOptionLabel={(option) => option.name || ""}
-        filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            placeholder="Buscar producto..."
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <>
-                  {isLoading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClose}>
-                        <CloseIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  )}
-                </>
-              ),
-            }}
-            autoFocus
-          />
-        )}
-        renderOption={(props, product) => (
-          <div
-            {...props}
-            key={product.id}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 20px",
-              borderBottom: "1px solid #ddd",
-            }}
-          >
-            <img
-              src={product.images[0]}
-              alt={product.name}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "4px",
-                objectFit: "cover",
+          }}
+            
+          onFocus={() => setIsFocused(true)}
+          options={filteredProducts}
+          open={open}
+          loading={isLoading}
+          onInputChange={handleInputChange}
+          onChange={handleDetails}
+          inputValue={search}
+          onBlur={() => {
+            setOpen(false);
+            setIsFocused(false);
+          }}
+          onClose={() => {
+            setOpen(false);
+            setIsFocused(false);
+          }}
+          noOptionsText="No hay opciones disponibles"
+          loadingText="Cargando opciones..."
+          getOptionLabel={(option) => option.name || ""}
+          filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              inputRef={inputRef} // Asigna la referencia aquí
+              placeholder="Buscar producto..."
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <>
+                    {isLoading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClose}>
+                          <CloseIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    )}
+                  </>
+                ),
               }}
+              
             />
-            <div style={{ marginLeft: "12px", flexGrow: 1 }}>
-              <div style={{ fontWeight: "500" }}>{product.name}</div>
-              <div style={{ fontSize: "12px", color: "#777" }}>
-                {product.brands.map((brand) => brand.name).join(", ")} -{" "}
-                {product.brands
-                  .map((brand) => brand.models.join(", "))
-                  .join(" | ")}
-              </div>
-            </div>
+          )}
+          renderOption={(props, product) => (
             <div
+              {...props}
+              key={product.id}
               style={{
-                fontWeight: "bold",
-                whiteSpace: "nowrap",
-                paddingLeft: "20px",
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 20px",
+                borderBottom: "1px solid #ddd",
               }}
             >
-              ${product.price}
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "4px",
+                  objectFit: "cover",
+                }}
+              />
+              <div style={{ marginLeft: "12px", flexGrow: 1 }}>
+                <div style={{ fontWeight: "500" }}>{product.name}</div>
+                <div style={{ fontSize: "12px", color: "#777" }}>
+                  {product.brands.map((brand) => brand.name).join(", ")} -{" "}
+                  {product.brands
+                    .map((brand) => brand.models.join(", "))
+                    .join(" | ")}
+                </div>
+              </div>
+              <div
+                style={{
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                  paddingLeft: "20px",
+                }}
+              >
+                ${product.price}
+              </div>
             </div>
-          </div>
-        )}
-      />
+          )}
+        />
+      </div>
     </div>
   );
 };

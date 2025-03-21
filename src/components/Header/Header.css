@@ -41,7 +41,7 @@
       }
       @media screen and (max-width: 768px) {
       
-        padding-right: 0px;
+        padding-right: 10px;
         gap: 10px;
       }
     }
