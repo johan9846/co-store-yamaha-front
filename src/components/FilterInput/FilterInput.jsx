@@ -24,7 +24,7 @@ export const FilterInput = () => {
   const [selectedModel, setSelectedModel] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const [openMobile, setOpenMobile] = useState("");
+  const [openMobile, setOpenMobile] = useState(true);
 
   // Obtener todas las brands al montar el componente
   useEffect(() => {
@@ -96,6 +96,7 @@ export const FilterInput = () => {
     setSelectedBrand("");
     setSelectedModel("");
     setSelectedCategory("");
+    setOpenMobile(false)
   };
 
   return (
