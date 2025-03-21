@@ -21,10 +21,11 @@ import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategori
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
   return (
-    <div>
+    <div className="principal">
       <Header />
       <ScrollRestoration />
-      <Outlet />
+      <div className="scroll-cont">  <Outlet /></div>
+    
     </div>
   );
 };
@@ -53,9 +54,9 @@ function App() {
     getProducts();
   }, [getProducts]);
 
-  if (dataProduct.length === 0) {
+/*   if (dataProduct.length === 0) {
     return <p>Cargando productos...</p>;
-  }
+  } */
 
   const router = createBrowserRouter([
     {

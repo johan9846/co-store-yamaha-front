@@ -1,5 +1,5 @@
 .header-container {
-  max-width: 100vw !important;
+  
   /* padding: 10px 40px; */
  
   border: 2px solid gray;
@@ -13,11 +13,18 @@
     .logo-header {
       display: flex;
       align-items: center;
- 
       img {
         height: 80px;
-        width: 90px;
+        width: 120px;
       }
+
+      @media screen and (max-width: 768px) {
+      
+       justify-content: center;
+      }
+    
+ 
+     
     }
 
     .items-header {
@@ -25,19 +32,20 @@
       justify-content: end;
       align-items: center;
       gap: 20px;
+      padding-right: 20px;
 
 
       a {
         text-decoration: none;
         color: black;
       }
+      @media screen and (max-width: 768px) {
+      
+        padding-right: 0px;
+        gap: 10px;
+      }
     }
   }
 
-  .filter-input {
-    display: flex;
-    justify-content: center;
-    background-color:#0039B1 ;
 
-  }
 }

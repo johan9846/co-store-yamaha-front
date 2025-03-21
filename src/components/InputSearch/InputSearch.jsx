@@ -30,11 +30,11 @@ const InputSearch = () => {
         setIsLoading(true);
         try {
           const { data } = await getSearchProduct(value);
-        
+
           const filterData = data.filter(
             (product) => product.category?.status === "Activo"
           );
-      
+
           setFilteredProducts(filterData);
           setOpen(true);
         } catch (error) {
@@ -74,98 +74,101 @@ const InputSearch = () => {
   };
 
   return (
-    <div className="container">
-      {isMobile && !openSearch ? (
-        <div className="searchIcon" onClick={() => setOpenSearch(true)}>
-          <SearchIcon /> <span>Buscar</span>
-        </div>
-      ) : (
-        <Autocomplete
-          options={filteredProducts}
-          open={open}
-          loading={isLoading}
-          className={isMobile ? "textFieldMobile" : "textField"}
-          onInputChange={handleInputChange}
-          onChange={handleDetails}
-          inputValue={search}
-          onBlur={() => setOpen(false)}
-          onClose={() => setOpen(false)}
-          noOptionsText="No hay opciones disponibles"
-          loadingText="Cargando opciones..."
-          getOptionLabel={(option) => option.name || ""}
-          filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              placeholder="Buscar producto..."
-              InputProps={{
-                ...params.InputProps,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <>
-                    {isLoading ? (
-                      <CircularProgress color="inherit" size={20} />
-                    ) : (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleClose}>
-                          <CloseIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    )}
-                  </>
-                ),
-              }}
-              autoFocus
-            />
-          )}
-          renderOption={(props, product) => (
-            <div
-              {...props}
-              key={product.id}
+    <div className="container-input-search">
+      <Autocomplete
+        sx={{
+          "& .MuiOutlinedInput-root": {
+
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderWidth: "2px", // Grosor del borde por defecto
+            
+            },
+          },
+        }}
+        fullWidth
+        options={filteredProducts}
+        open={open}
+        loading={isLoading}
+        onInputChange={handleInputChange}
+        onChange={handleDetails}
+        inputValue={search}
+        onBlur={() => setOpen(false)}
+        onClose={() => setOpen(false)}
+        noOptionsText="No hay opciones disponibles"
+        loadingText="Cargando opciones..."
+        getOptionLabel={(option) => option.name || ""}
+        filterOptions={(x) => x} // No filtramos, mostramos todo lo que llega
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            placeholder="Buscar producto..."
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <>
+                  {isLoading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClose}>
+                        <CloseIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  )}
+                </>
+              ),
+            }}
+            autoFocus
+          />
+        )}
+        renderOption={(props, product) => (
+          <div
+            {...props}
+            key={product.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "10px 20px",
+              borderBottom: "1px solid #ddd",
+            }}
+          >
+            <img
+              src={product.images[0]}
+              alt={product.name}
               style={{
-                display: "flex",
-                alignItems: "center",
-                padding: "10px 20px",
-                borderBottom: "1px solid #ddd",
+                width: "50px",
+                height: "50px",
+                borderRadius: "4px",
+                objectFit: "cover",
               }}
-            >
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  borderRadius: "4px",
-                  objectFit: "cover",
-                }}
-              />
-              <div style={{ marginLeft: "12px", flexGrow: 1 }}>
-                <div style={{ fontWeight: "500" }}>{product.name}</div>
-                <div style={{ fontSize: "12px", color: "#777" }}>
-                  {product.brands.map((brand) => brand.name).join(", ")} -{" "}
-                  {product.brands
-                    .map((brand) => brand.models.join(", "))
-                    .join(" | ")}
-                </div>
-              </div>
-              <div
-                style={{
-                  fontWeight: "bold",
-                  whiteSpace: "nowrap",
-                  paddingLeft: "10px",
-                }}
-              >
-                ${product.price}
+            />
+            <div style={{ marginLeft: "12px", flexGrow: 1 }}>
+              <div style={{ fontWeight: "500" }}>{product.name}</div>
+              <div style={{ fontSize: "12px", color: "#777" }}>
+                {product.brands.map((brand) => brand.name).join(", ")} -{" "}
+                {product.brands
+                  .map((brand) => brand.models.join(", "))
+                  .join(" | ")}
               </div>
             </div>
-          )}
-        />
-      )}
+            <div
+              style={{
+                fontWeight: "bold",
+                whiteSpace: "nowrap",
+                paddingLeft: "20px",
+              }}
+            >
+              ${product.price}
+            </div>
+          </div>
+        )}
+      />
     </div>
   );
 };

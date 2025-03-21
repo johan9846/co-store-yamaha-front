@@ -1,27 +1,25 @@
-.MuiAutocomplete-hasPopupIcon.css-1tlcqt-MuiAutocomplete-root
+.MuiAutocomplete-hasPopupIcon.css-w7gont-MuiAutocomplete-root
   .MuiOutlinedInput-root,
-.MuiAutocomplete-hasClearIcon.css-1tlcqt-MuiAutocomplete-root
+.MuiAutocomplete-hasClearIcon.css-w7gont-MuiAutocomplete-root
   .MuiOutlinedInput-root {
   padding-right: 10px !important;
 }
 
-.container {
-  position: relative;
+.css-1cv3st9-MuiPaper-root-MuiAutocomplete-paper {
+  min-width: 330px !important ;
+  border: 1px solid rgb(121, 121, 121);
+  margin-top: 5px;
+}
 
-  @media screen and (max-width: 768px) {
-    display: grid;
-    justify-content: center;
-  }
+.container-input-search {
+  position: relative;
+  padding: 0;
 }
 
 .searchIcon {
   display: flex;
   cursor: pointer;
   gap: 10px;
-}
-
-.textField {
-  width: 100%;
 }
 
 .textFieldMobile {
