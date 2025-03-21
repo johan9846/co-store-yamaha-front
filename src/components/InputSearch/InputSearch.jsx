@@ -23,7 +23,7 @@ const InputSearch = () => {
   const [openSearch, setOpenSearch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 575px)");
 
   // Función de búsqueda con debounce de 500ms
   const handleSearch = useCallback(
@@ -101,8 +101,9 @@ const InputSearch = () => {
               "& .MuiOutlinedInput-notchedOutline": {
                 borderWidth: "2px", // Grosor del borde por defecto
               },
-              position: (isFocused && isMobile)? "fixed" : "relative", // Fija la posición cuando está en foco
-              width: (isFocused && isMobile) ?  "85vw" : "100%",
+              
+              width: (isFocused && isMobile) ?  "82vw" : "100%",
+
             },
           }}
             

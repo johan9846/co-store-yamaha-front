@@ -103,8 +103,8 @@ export const FilterInput = () => {
       <Col
         xs={11}
         sm={11}
-        md={3}
-        lg={2}
+        md={4}
+        lg={3}
         xl={2}
         xxl={2}
         className="icon-filter"
