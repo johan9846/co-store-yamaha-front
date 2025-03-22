@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Autocomplete,
@@ -74,7 +74,7 @@ const InputSearch = () => {
     setOpen(false);
     setSearch("");
     setIsFocused(false);
-  
+
     // Retrasar el blur para evitar que Autocomplete recupere el foco
     setTimeout(() => {
       if (inputRef.current) {
@@ -85,14 +85,8 @@ const InputSearch = () => {
 
   return (
     <div>
-
-    
-      {isFocused && (
-        <div className="search-overlay" onClick={handleClose}></div>
-      )}
-
       {/* Fondo oscuro cuando hay resultados */}
-      <div className="container-input-search">
+      <div className={isFocused ? "container-input-search" : ""}>
         <Autocomplete
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -101,12 +95,12 @@ const InputSearch = () => {
               "& .MuiOutlinedInput-notchedOutline": {
                 borderWidth: "2px", // Grosor del borde por defecto
               },
-              
-              width: (isFocused && isMobile) ?  "82vw" : "100%",
 
+              width:
+                isFocused && isMobile ? "80vw" : isFocused ? "50vw" : "100%",
             },
           }}
-            
+          className={`search-input ${isFocused ? "search-input-top" : ""}`}
           onFocus={() => setIsFocused(true)}
           options={filteredProducts}
           open={open}
@@ -153,7 +147,6 @@ const InputSearch = () => {
                   </>
                 ),
               }}
-              
             />
           )}
           renderOption={(props, product) => (
