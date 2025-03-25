@@ -20,7 +20,6 @@ const InputSearch = () => {
   const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [open, setOpen] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 575px)");
@@ -59,6 +58,11 @@ const InputSearch = () => {
 
     if (reason === "input") {
       handleSearch(value);
+      if (value.length > 0) {
+        setIsFocused(true);
+      } else {
+        setIsFocused(false);
+      }
     }
   };
 
@@ -75,12 +79,6 @@ const InputSearch = () => {
     setSearch("");
     setIsFocused(false);
 
-    // Retrasar el blur para evitar que Autocomplete recupere el foco
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.blur();
-      }
-    }, 500);
   };
   const formatCurrency = (value) =>
     `${Number(value || 0).toLocaleString("es-CO")}`;
@@ -102,7 +100,6 @@ const InputSearch = () => {
             },
           }}
           className={`search-input ${isFocused ? "search-input-top" : ""}`}
-          onFocus={() => setIsFocused(true)}
           options={filteredProducts}
           open={open}
           loading={isLoading}
