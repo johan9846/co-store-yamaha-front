@@ -23,7 +23,7 @@ export const Home = () => {
 
         <Row className="container-card mt-4 mb-4">
           {categories.map((category, index) => (
-            <Col xs={6} sm={6} md={5} lg={5} xl={4} xxl={3} key={index} className="d-flex justify-content-center" >
+            <Col xs={6} sm={6} md={5} lg={5} xl={3} xxl={3} key={index} className="d-flex justify-content-center" >
               <div
                 className="tarjet-home"
                 style={{ backgroundImage: `url(${category.image})` }}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -8,11 +8,16 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import "./RepuestosCategoria.css";
+import { InputAdornment, Pagination, TextField } from "@mui/material";
+import { SearchOutlined } from "@mui/icons-material";
 
 export const RepuestosCategoria = () => {
   const { id } = useParams();
   const [dataCategories, setDataCategories] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const ITEMS_PERPAGE = 10;
 
   // Productos que tiene la categoria seleccionada 2
   const getCategoriesProducts = useCallback(async (id) => {
@@ -31,6 +36,25 @@ export const RepuestosCategoria = () => {
   useEffect(() => {
     getCategoriesProducts(id);
   }, [getCategoriesProducts]);
+  const handlePageChange = (_, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const filteredData = useMemo(() => {
+    const filtered = dataCategories.filter((file) =>
+      file.name?.toLowerCase().includes(searchTerm)
+    );
+
+    setCurrentPage(1);
+    return filtered;
+  }, [searchTerm, dataCategories]);
+
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PERPAGE;
+    const endIndex = startIndex + ITEMS_PERPAGE;
+    const filterPage = filteredData.slice(startIndex, endIndex);
+    return filterPage;
+  }, [currentPage, ITEMS_PERPAGE, filteredData]);
 
   return (
     <Container>
@@ -45,7 +69,31 @@ export const RepuestosCategoria = () => {
       </Breadcrumbs>
 
       <Row className="mt-2 mb-4">
-        {dataCategories.map((item, key) => (
+        <Col xs={8} sm={8} md={6} lg={4} xl={4} xxl={4}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Buscar"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchOutlined />
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "8px",
+              },
+            }}
+          />
+        </Col>
+      </Row>
+
+      <Row className="mt-2 mb-4">
+        {paginatedData.map((item, key) => (
           <Col
             xs={12}
             sm={12}
@@ -55,11 +103,22 @@ export const RepuestosCategoria = () => {
             xxl={3}
             className="mt-3"
             key={item.id}
-           
-          > 
+          >
             <ProductsCard product={item} key={key} />
           </Col>
         ))}
+      </Row>
+      <Row className="mb-4 mt-5">
+        <Col>
+          <div className="d-flex justify-content-center">
+            <Pagination
+              count={Math.ceil(filteredData.length / ITEMS_PERPAGE)}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </div>
+        </Col>
       </Row>
     </Container>
   );
