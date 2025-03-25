@@ -57,16 +57,20 @@ export const RepuestosCategoria = () => {
   }, [currentPage, ITEMS_PERPAGE, filteredData]);
 
   return (
-    <Container>
-      <Breadcrumbs aria-label="breadcrumb" className="mt-4">
-        <Link underline="hover" href="/home">
-          Home
-        </Link>
-        <Link underline="hover" href="/home/repuestos">
-          Repuestos
-        </Link>
-        <span>{dataCategories[0]?.category.name}</span>
-      </Breadcrumbs>
+    <Container className="px-3">
+      <Row className="mt-2 mb-4">
+        <Col>
+          <Breadcrumbs aria-label="breadcrumb" className="mt-4">
+            <Link underline="hover" href="/home">
+              Home
+            </Link>
+            <Link underline="hover" href="/home/repuestos">
+              Repuestos
+            </Link>
+            <span>{dataCategories[0]?.category.name}</span>
+          </Breadcrumbs>
+        </Col>
+      </Row>
 
       <Row className="mt-2 mb-4">
         <Col xs={8} sm={8} md={6} lg={4} xl={4} xxl={4}>

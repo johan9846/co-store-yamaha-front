@@ -1,11 +1,9 @@
 .header-container {
-  
   /* padding: 10px 40px; */
-  position: sticky;
+/*   position: sticky;
   top: 0;
- 
+  z-index: 90; */
   border: 2px solid gray;
-  z-index: 90;
 
   background-color: white;
   .items-cart {
@@ -23,12 +21,8 @@
       }
 
       @media screen and (max-width: 768px) {
-      
-       justify-content: center;
+        justify-content: center;
       }
-    
- 
-     
     }
 
     .items-header {
@@ -38,18 +32,14 @@
       gap: 20px;
       padding-right: 20px;
 
-
       a {
         text-decoration: none;
         color: black;
       }
       @media screen and (max-width: 768px) {
-      
         padding-right: 10px;
         gap: 10px;
       }
     }
   }
-
-
 }

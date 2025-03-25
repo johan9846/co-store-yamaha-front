@@ -65,21 +65,24 @@ export const FilterResult = () => {
   if (loading) return <p>Cargando...</p>;
 
   return (
-    <Container className="mt-4">
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" href="/home">
-          Home
-        </Link>
-        <Link underline="hover" href="/home/repuestos">
-          Repuestos
-        </Link>
-        <span>{details[0]?.category.name}</span>
-      </Breadcrumbs>
+    <Container className="mt-4 px-3">
+      <Row className="mt-2 mb-4">
+        <Col>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" href="/home">
+              Home
+            </Link>
+            <Link underline="hover" href="/home/repuestos">
+              Repuestos
+            </Link>
+            <span>{details[0]?.category.name}</span>
+          </Breadcrumbs>
+        </Col>
+      </Row>
 
       <Row className="mt-2 mb-4">
         <Col xs={8} sm={8} md={6} lg={4} xl={4} xxl={4}>
           <TextField
-          
             fullWidth
             variant="outlined"
             placeholder="Buscar"

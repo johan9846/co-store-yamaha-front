@@ -46,159 +46,165 @@ export const DetailProduct = ({ details }) => {
     `${Number(value || 0).toLocaleString("es-CO")}`;
 
   return (
-    <>
-      <Container className="container-products-detail mt-4">
-        <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" href="/home">
-            Home
-          </Link>
-          <Link underline="hover" href="/home/repuestos">
-            Repuestos
-          </Link>
+    <Container className="container-products-detail mt-4">
+      <Row className="mt-4 mb-2">
+        <Col>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" href="/home">
+              Home
+            </Link>
+            <Link underline="hover" href="/home/repuestos">
+              Repuestos
+            </Link>
 
-          <Link
-            underline="hover"
-            href={`/home/repuestos/${details.category_id}`}
-          >
-            {details.category.name}
-          </Link>
-          <span>{details.name}</span>
-        </Breadcrumbs>
+            <Link
+              underline="hover"
+              href={`/home/repuestos/${details.category_id}`}
+            >
+              {details.category.name}
+            </Link>
+            <span>{details.name}</span>
+          </Breadcrumbs>
+        </Col>
+      </Row>
 
-        <Row className="mt-4 mb-2">
-          <Col>
-            <Row>
-              <Col xs={12} sm={12} md={5} lg={5} xl={4} xxl={4}>
-                <div className="container-carrousell">
-                  <Slider {...carouselSettings} className="carrousell">
-                    {details.images.map((image, index) => (
-                      <img src={image} className="image-slick" key={index} />
-                    ))}
-                  </Slider>
+      <Row className="mt-4 mb-2">
+        <Col>
+          <Row>
+            <Col xs={12} sm={12} md={5} lg={5} xl={4} xxl={4}>
+              <div className="container-carrousell">
+                <Slider {...carouselSettings} className="carrousell">
+                  {details.images.map((image, index) => (
+                    <img src={image} className="image-slick" key={index} />
+                  ))}
+                </Slider>
+              </div>
+            </Col>
+
+            <Col className="mt-5 mt-md-0">
+              <div>
+                <h2>{details.name}</h2>
+
+                <div className="category-price">
+                  <div className="container-price">
+                    <div className="old-price">
+                      $ {formatCurrency(details.oldPrice)}{" "}
+                    </div>
+                    <div className="price">
+                      $ {formatCurrency(details.price)}
+                    </div>
+                  </div>
                 </div>
-              </Col>
+              </div>
 
-              <Col>
+              <div className="mt-3">
+                <div>{renderStars(details.rating)}</div>
+              </div>
+
+              <p className="mt-3">{details.description}</p>
+
+              <div className="d-flex mt-3">
                 <div>
-                  <h2>{details.name}</h2>
-
-                  <div className="category-price">
-                    <div className="container-price">
-                      <div className="old-price">$ {formatCurrency(details.oldPrice)}   </div>
-                      <div className="price">$ {formatCurrency(details.price)}</div>
-                    </div>
-                  </div>
+                  {details.brands.map((brand) => brand.name).join(", ")} -{" "}
+                  {details.brands
+                    .map((brand) => brand.models.join(", "))
+                    .join(" | ")}
                 </div>
+              </div>
 
-                <div className="mt-3">
-                  <div>{renderStars(details.rating)}</div>
-                </div>
+              <div className="container-amount mt-3">
+                <div className="text-base text-black">Cantidad</div>
 
-                <p className="mt-3">{details.description}</p>
-
-                <div className="d-flex mt-3">
-                  <div>
-                    {details.brands.map((brand) => brand.name).join(", ")} -{" "}
-                    {details.brands
-                      .map((brand) => brand.models.join(", "))
-                      .join(" | ")}
-                  </div>
-                </div>
-
-                <div className="container-amount mt-3">
-                  <div className="text-base text-black">Cantidad</div>
-
-                  <div className="amount-counter">
-                    <div
-                      className="button-amount"
-                      onClick={() => setBaseQty(baseQty > 1 ? baseQty - 1 : 1)}
-                    >
-                      -
-                    </div>
-
-                    <span>{baseQty}</span>
-
-                    <div
-                      className="button-amount"
-                      onClick={() => {
-                        // Obtenemos la cantidad del producto en el carrito
-                        const productInCart = useCartStore
-                          .getState()
-                          .productData.find((item) => item.id === details.id);
-
-                        const cartQuantity = productInCart
-                          ? productInCart.quantity
-                          : 0;
-
-                        // Verificamos ambas condiciones antes de incrementar la cantidad
-                        if (
-                          baseQty < details.quantity_stock &&
-                          baseQty < details.quantity_stock - cartQuantity
-                        ) {
-                          setBaseQty(baseQty + 1);
-                        }
-                      }}
-                    >
-                      +
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="contained" // O "outlined" si prefieres un borde en lugar de fondo
-                    color="primary" // Puedes cambiar el color a "secondary", "success", etc.
-                 
-                    onClick={() => {
-                      addToCart({
-                        id: details.id,
-                        brands: details.brands,
-                        category: details.category.name,
-                        name: details.name,
-                        images: details.images,
-                        price: details.price,
-                        quantity: baseQty,
-                        quantity_stock: details.quantity_stock,
-                        description: details.description,
-                      });
-
-                      setTimeout(() => {
-                        toast.success(`${details.name} is added`);
-                      }, 50);
-                    }}
-                    disabled={
-                      baseQty >= details.quantity_stock ||
-                      useCartStore
-                        .getState()
-                        .productData.find((item) => item.id === details.id)
-                        ?.quantity >= details.quantity_stock
-                    }
+                <div className="amount-counter">
+                  <div
+                    className="button-amount"
+                    onClick={() => setBaseQty(baseQty > 1 ? baseQty - 1 : 1)}
                   >
-                    Añadir al Carrito
-                  </Button>
+                    -
+                  </div>
+
+                  <span>{baseQty}</span>
+
+                  <div
+                    className="button-amount"
+                    onClick={() => {
+                      // Obtenemos la cantidad del producto en el carrito
+                      const productInCart = useCartStore
+                        .getState()
+                        .productData.find((item) => item.id === details.id);
+
+                      const cartQuantity = productInCart
+                        ? productInCart.quantity
+                        : 0;
+
+                      // Verificamos ambas condiciones antes de incrementar la cantidad
+                      if (
+                        baseQty < details.quantity_stock &&
+                        baseQty < details.quantity_stock - cartQuantity
+                      ) {
+                        setBaseQty(baseQty + 1);
+                      }
+                    }}
+                  >
+                    +
+                  </div>
                 </div>
 
-                <p className="mt-4">
-                  Categoria: <span>{details.category.name}</span>
-                </p>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+                <Button
+                  variant="contained" // O "outlined" si prefieres un borde en lugar de fondo
+                  color="primary" // Puedes cambiar el color a "secondary", "success", etc.
+                  onClick={() => {
+                    addToCart({
+                      id: details.id,
+                      brands: details.brands,
+                      category: details.category.name,
+                      name: details.name,
+                      images: details.images,
+                      price: details.price,
+                      quantity: baseQty,
+                      quantity_stock: details.quantity_stock,
+                      description: details.description,
+                    });
 
-      <div>
-        <ToastContainer
-          position="top-left"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </div>
-    </>
+                    setTimeout(() => {
+                      toast.success(
+                        `${details.name} agregado al carrito de compras`
+                      );
+                    }, 50);
+                  }}
+                  disabled={
+                    baseQty >= details.quantity_stock ||
+                    useCartStore
+                      .getState()
+                      .productData.find((item) => item.id === details.id)
+                      ?.quantity >= details.quantity_stock
+                  }
+                >
+                  Añadir al Carrito
+                </Button>
+              </div>
+
+              <p className="mt-4">
+                Categoria: <span>{details.category.name}</span>
+              </p>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+
+      <ToastContainer
+        position="top-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        className="toast-container"
+      />
+    </Container>
   );
 };

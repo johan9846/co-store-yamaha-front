@@ -96,7 +96,7 @@ export const ProductsCard = ({ product }) => {
             });
 
             setTimeout(() => {
-              toast.success(`${product.name} is added`);
+              toast.success(`${product.name} agregado al carrito de compras`);
             }, 50);
           }}
           disabled={
@@ -110,7 +110,7 @@ export const ProductsCard = ({ product }) => {
         </Button>
       </div>
 
-      <ToastContainer
+   <ToastContainer
         position="top-left"
         autoClose={2000}
         hideProgressBar={false}
@@ -121,6 +121,7 @@ export const ProductsCard = ({ product }) => {
         draggable
         pauseOnHover
         theme="dark"
+         className="toast-container"
       />
     </div>
   );

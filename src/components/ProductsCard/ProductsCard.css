@@ -1,9 +1,12 @@
 .container-products-card {
+  padding: 20px !important;
+  border: 2px solid gray;
+  border-radius: 10px;
 
-padding: 20px;
-border: 2px solid gray;
-border-radius: 10px;
-
+  .toast-container {
+    max-width: 90%; /* Ajusta el ancho */
+    left: 5% !important; /* Centrarlo */
+  }
 
   .container-carrousell {
     width: 100%;
@@ -13,12 +16,10 @@ border-radius: 10px;
     align-items: center;
 
     .carrousell {
- 
       width: 90%;
     }
 
     .image-slick {
- 
       height: 220px;
       width: 100%;
       cursor: pointer;
@@ -43,13 +44,10 @@ border-radius: 10px;
     display: flex;
     justify-content: space-between;
     .container-price {
-     
-    
       gap: 10px;
       .old-price {
         text-decoration: line-through;
         color: gray;
-        
       }
       .price {
         color: black;
@@ -66,9 +64,5 @@ border-radius: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
-    
   }
-  
-
-
 }
