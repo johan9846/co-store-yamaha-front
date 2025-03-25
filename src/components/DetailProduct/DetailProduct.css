@@ -2,18 +2,15 @@
   .container-carrousell {
     width: 100%;
     max-width: 92vw;
-    border: 2px solid rgb(229, 255, 0);
     display: flex;
     justify-content: center;
     align-items: center;
 
     .carrousell {
-      border: 2px solid red;
       width: 80%;
     }
 
     .image-slick {
-      border: 2px solid blue;
       max-height: 45vh;
       width: 100%;
       transition: transform 0.5s ease-in-out;
@@ -39,7 +36,8 @@
     justify-content: space-between;
     .container-price {
       display: flex;
-      border: 2px solid red;
+    
+
       gap: 10px;
       .old-price {
         text-decoration: line-through;
@@ -47,13 +45,14 @@
       }
       .price {
         color: black;
+        font-weight: bold;
+        font-size: 20px;
       }
     }
   }
 
   .container-amount {
     display: flex;
-    border: 2px solid blue;
     align-items: center;
     gap: 20px;
 
@@ -68,10 +67,6 @@
       }
     }
 
-    .button-add {
-      padding: 10px;
-      background-color: black;
-      color: white;
-    }
+  
   }
 }

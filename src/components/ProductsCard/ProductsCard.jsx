@@ -7,7 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import "./ProductsCard.css";
-
+import { Button } from "@mui/material";
 
 export const ProductsCard = ({ product }) => {
   const carouselSettings = {
@@ -37,12 +37,12 @@ export const ProductsCard = ({ product }) => {
 
   const navigate = useNavigate();
 
- 
-
-
   const handleDetails = () => {
-    navigate(`/home/repuestos/product/${id}`)
+    navigate(`/home/repuestos/product/${id}`);
   };
+
+  const formatCurrency = (value) =>
+    `${Number(value || 0).toLocaleString("es-CO")}`;
 
   return (
     <div className="container-products-card">
@@ -60,31 +60,32 @@ export const ProductsCard = ({ product }) => {
         </Slider>
       </div>
 
-
-      <div className="mt-3">
+      <div className="mt-4">
         <h2>{name}</h2>
       </div>
 
       <div className="category-price">
         <div>{category.name}</div>
         <div className="container-price">
-          <div className="old-price">${oldPrice}</div>
-          <div className="price">${price}</div>
+          <div className="old-price">${formatCurrency(oldPrice)}  </div>
+          <div className="price">${formatCurrency(price)} </div>
         </div>
       </div>
 
-      <div className="mt-3">
-        {brands.map((brand) => brand.name).join(", ")} - {brands.map((brand) => brand.models.join(", ")).join(" | ")}
-                    
+      <div className="mt-3 brands-container">
+        {brands.map((brand) => brand.name).join(", ")} -{" "}
+        {brands.map((brand) => brand.models.join(", ")).join(" | ")}
       </div>
 
       <div className="mt-2">{description}</div>
       <div className="mt-2">
-        <button
-           onClick={() => {
+        <Button
+          variant="contained" // O "outlined" si prefieres un borde en lugar de fondo
+          color="primary" // Puedes cambiar el color a "secondary", "success", etc.
+          onClick={() => {
             addToCart({
               id: product.id,
-              brands:product.brands,
+              brands: product.brands,
               category: product.category.name,
               name: product.name,
               images: product.images,
@@ -93,18 +94,20 @@ export const ProductsCard = ({ product }) => {
               quantity: 1,
               description: product.description,
             });
-        
+
             setTimeout(() => {
               toast.success(`${product.name} is added`);
             }, 50);
           }}
           disabled={
-            useCartStore.getState().productData.find((item) => item.id === product.id)?.quantity >=
+            useCartStore
+              .getState()
+              .productData.find((item) => item.id === product.id)?.quantity >=
             product.quantity_stock
           }
         >
           Agregar al Carrito
-        </button>
+        </Button>
       </div>
 
       <ToastContainer

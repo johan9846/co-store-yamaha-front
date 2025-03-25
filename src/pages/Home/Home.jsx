@@ -17,7 +17,7 @@ export const Home = () => {
     <>
       <img src={logoHome} className="image-banner" />
       <Container fluid className="mt-4">
-        <Row>
+        <Row >
           <Col className="title-home">Explora nuestras categorías</Col>
         </Row>
 

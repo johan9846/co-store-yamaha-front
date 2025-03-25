@@ -34,7 +34,7 @@ export const RepuestosCategoria = () => {
 
   return (
     <Container>
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs aria-label="breadcrumb" className="mt-4">
         <Link underline="hover" href="/home">
           Home
         </Link>
@@ -44,7 +44,7 @@ export const RepuestosCategoria = () => {
         <span>{dataCategories[0]?.category.name}</span>
       </Breadcrumbs>
 
-      <Row style={{ border: "2px solid black" }}>
+      <Row className="mt-2 mb-4">
         {dataCategories.map((item, key) => (
           <Col
             xs={12}
@@ -53,10 +53,10 @@ export const RepuestosCategoria = () => {
             lg={4}
             xl={3}
             xxl={3}
-            className="px-3 mt-4"
+            className="mt-3"
             key={item.id}
-            style={{ border: "2px solid green" }}
-          >
+           
+          > 
             <ProductsCard product={item} key={key} />
           </Col>
         ))}

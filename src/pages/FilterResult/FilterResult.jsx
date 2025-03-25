@@ -51,7 +51,7 @@ export const FilterResult = () => {
         <span>{details[0]?.category.name}</span>
       </Breadcrumbs>
 
-      <Row style={{ border: "2px solid black" }}>
+      <Row className="mt-2 mb-4">
         {details.map((item) => (
           <Col
             xs={12}
@@ -60,9 +60,9 @@ export const FilterResult = () => {
             lg={4}
             xl={3}
             xxl={3}
-            className="px-3 mt-4"
+            className="mt-3"
             key={item.id}
-            style={{ border: "2px solid green" }}
+          
           >
             <ProductsCard product={item} />
           </Col>

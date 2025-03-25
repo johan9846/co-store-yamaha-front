@@ -14,9 +14,10 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 
 import "./DetailProduct.css";
+import { Button } from "@mui/material";
 
 export const DetailProduct = ({ details }) => {
-  console.log(details , "detalels");
+  console.log(details, "detalels");
   const carouselSettings = {
     dots: true, // Muestra puntos de navegación
     infinite: true, // Permite navegación infinita
@@ -35,18 +36,19 @@ export const DetailProduct = ({ details }) => {
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) =>
       index < rating ? (
-        <StarIcon key={index} />
+        <StarIcon key={index} sx={{ color: "gold" }} />
       ) : (
         <StarOutlineIcon key={index} />
       )
     );
   };
+  const formatCurrency = (value) =>
+    `${Number(value || 0).toLocaleString("es-CO")}`;
 
   return (
     <>
       <Container className="container-products-detail mt-4">
-
-         <Breadcrumbs aria-label="breadcrumb">
+        <Breadcrumbs aria-label="breadcrumb">
           <Link underline="hover" href="/home">
             Home
           </Link>
@@ -56,16 +58,16 @@ export const DetailProduct = ({ details }) => {
 
           <Link
             underline="hover"
-            href={`/home/repuestos/${details.category_id }`}
+            href={`/home/repuestos/${details.category_id}`}
           >
-            {details.category.name }
+            {details.category.name}
           </Link>
           <span>{details.name}</span>
-        </Breadcrumbs> 
+        </Breadcrumbs>
 
-        <Row>
+        <Row className="mt-4 mb-2">
           <Col>
-            <Row style={{ border: "2px solid green " }}>
+            <Row>
               <Col xs={12} sm={12} md={5} lg={5} xl={4} xxl={4}>
                 <div className="container-carrousell">
                   <Slider {...carouselSettings} className="carrousell">
@@ -82,8 +84,8 @@ export const DetailProduct = ({ details }) => {
 
                   <div className="category-price">
                     <div className="container-price">
-                      <div className="old-price">${details.oldPrice}</div>
-                      <div className="price">${details.price}</div>
+                      <div className="old-price">$ {formatCurrency(details.oldPrice)}   </div>
+                      <div className="price">$ {formatCurrency(details.price)}</div>
                     </div>
                   </div>
                 </div>
@@ -96,7 +98,10 @@ export const DetailProduct = ({ details }) => {
 
                 <div className="d-flex mt-3">
                   <div>
-                  {details.brands.map((brand) => brand.name).join(", ")} - {details.brands.map((brand) => brand.models.join(", ")).join(" | ")}
+                    {details.brands.map((brand) => brand.name).join(", ")} -{" "}
+                    {details.brands
+                      .map((brand) => brand.models.join(", "))
+                      .join(" | ")}
                   </div>
                 </div>
 
@@ -111,7 +116,7 @@ export const DetailProduct = ({ details }) => {
                       -
                     </div>
 
-                    <span style={{ border: "2px solid red" }}>{baseQty}</span>
+                    <span>{baseQty}</span>
 
                     <div
                       className="button-amount"
@@ -138,12 +143,14 @@ export const DetailProduct = ({ details }) => {
                     </div>
                   </div>
 
-                  <button
-                    className="button-add"
+                  <Button
+                    variant="contained" // O "outlined" si prefieres un borde en lugar de fondo
+                    color="primary" // Puedes cambiar el color a "secondary", "success", etc.
+                 
                     onClick={() => {
                       addToCart({
                         id: details.id,
-                        brands:details.brands,
+                        brands: details.brands,
                         category: details.category.name,
                         name: details.name,
                         images: details.images,
@@ -166,7 +173,7 @@ export const DetailProduct = ({ details }) => {
                     }
                   >
                     Añadir al Carrito
-                  </button>
+                  </Button>
                 </div>
 
                 <p className="mt-4">

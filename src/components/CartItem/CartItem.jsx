@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useMemo, useState } from "react";
 import "./CartItem.css";
+import { Button } from "@mui/material";
 
 export const CartItem = () => {
   const carouselSettings = {
@@ -21,6 +22,8 @@ export const CartItem = () => {
   };
 
   const [totalAmount, setTotalAmount] = useState("");
+  const formatCurrency = (value) =>
+    `$ ${Number(value || 0).toLocaleString("es-CO")}`;
   const {
     productData,
     incrementQuantity,
@@ -43,13 +46,13 @@ export const CartItem = () => {
     <>
       <Container className="container-cart-item">
         <div>
-          <h2 className="font-titleFont text-2xl">Shopping cart</h2>
+          <h2 className="mt-4">Carrito de compras</h2>
         </div>
 
         <Row>
-          <Col xs={12} sm={12} md={7} lg={7} xl={7} xxl={7} className="mt-3">
+          <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
             {productData.map((item, key) => (
-              <Row className="mt-5" key={key}>
+              <Row className="d-flex justify-content-center mt-5" key={key}>
                 <Col
                   xs={1}
                   sm={1}
@@ -65,32 +68,57 @@ export const CartItem = () => {
                   />
                 </Col>
 
-                <Col className="image-cart">
-                  <div className="container-carrousell">
-                    <Slider {...carouselSettings} className="carrousell">
-                      {item.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Imagen ${index + 1}`}
-                          className="image-slick"
-                        />
-                      ))}
-                    </Slider>
-                  </div>
-
-                  <img src={item.image} alt="" className="image-cart" />
+                <Col
+                  xs={5}
+                  sm={5}
+                  md={5}
+                  lg={5}
+                  xl={3}
+                  xxl={3}
+                  className="image-cart"
+                >
+                  <Slider
+                    {...carouselSettings}
+                    className="container-carrousell"
+                  >
+                    {item.images.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`Imagen ${index + 1}`}
+                        className="image-slick"
+                      />
+                    ))}
+                  </Slider>
                 </Col>
 
-                <Col className="title-product">
+                <Col
+                  xs={6}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={4}
+                  xxl={4}
+                  className="title-product"
+                >
                   <div>{item.name} </div>
-                  <div className="mt-2">
-          
-                    {item.brands.map((brand) => brand.name).join(", ")} - {item.brands.map((brand) => brand.models.join(", ")).join(" | ")}
+                  <div>
+                    {item.brands.map((brand) => brand.name).join(", ")} -{" "}
+                    {item.brands
+                      .map((brand) => brand.models.join(", "))
+                      .join(" | ")}
                   </div>
                 </Col>
 
-                <Col className="container-amount">
+                <Col
+                  xs={12}
+                  sm={12}
+                  md={7}
+                  lg={6}
+                  xl={4}
+                  xxl={4}
+                  className="container-amount mt-5 mt-xl-0"
+                >
                   <div>Cantidad</div>
 
                   <div className="amount-counter">
@@ -110,18 +138,18 @@ export const CartItem = () => {
                       +
                     </div>
                   </div>
-                  <div>${item.price * item.quantity}</div>
+                  <div>{formatCurrency(item.price * item.quantity)}</div>
                 </Col>
               </Row>
             ))}
           </Col>
 
-          <Col className="tarjet-pay mt-3">
+          <Col className="tarjet-pay mt-5 mt-xl-3 ">
             <Row className="justify-content-center">
               <Col xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
                 <h2>Total</h2>
 
-                <span className="font-bold text-lg"> COP ${totalAmount}</span>
+                <span> COP {formatCurrency(totalAmount)}</span>
                 <p className="mt-4">
                   <span>
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -131,26 +159,35 @@ export const CartItem = () => {
 
                 <hr></hr>
 
-                <div className="total mt-6">
+                <div className="total mt-5">
                   <div> Total</div>
 
-                  <div>${totalAmount}</div>
+                  <div>{formatCurrency(totalAmount)}</div>
                 </div>
                 <div className="mt-3">
-                  <button onClick={handleCheckout} className="pay-button">
+                  <Button
+                    onClick={handleCheckout}
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                  >
                     Pagar
-                  </button>
+                  </Button>
                 </div>
               </Col>
             </Row>
           </Col>
         </Row>
 
-        <Row className="mt-5">
+        <Row className="mt-5 mb-5">
           <Col>
-            <button onClick={() => resetCart()} className="reset-cart">
+            <Button
+              onClick={() => resetCart()}
+              variant="contained"
+              color="error"
+            >
               Limpiar Carrito
-            </button>
+            </Button>
           </Col>
         </Row>
       </Container>

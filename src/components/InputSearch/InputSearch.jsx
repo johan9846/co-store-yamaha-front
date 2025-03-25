@@ -82,7 +82,8 @@ const InputSearch = () => {
       }
     }, 500);
   };
-
+  const formatCurrency = (value) =>
+    `${Number(value || 0).toLocaleString("es-CO")}`;
   return (
     <div>
       {/* Fondo oscuro cuando hay resultados */}
@@ -186,7 +187,7 @@ const InputSearch = () => {
                   paddingLeft: "20px",
                 }}
               >
-                ${product.price}
+                $ {formatCurrency(product.price)}
               </div>
             </div>
           )}
