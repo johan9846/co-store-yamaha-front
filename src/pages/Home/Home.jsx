@@ -16,14 +16,14 @@ export const Home = () => {
   return (
     <>
       <img src={logoHome} className="image-banner" />
-      <Container fluid className="mt-4">
+      <Container fluid className="mt-4 mb-5">
         <Row >
-          <Col className="title-home">Explora nuestras categorías</Col>
+          <Col className="title-home mb-4">Explora nuestras categorías</Col>
         </Row>
 
         <Row className="container-card mt-4 mb-4">
           {categories.map((category, index) => (
-            <Col xs={5} sm={5} md={4} lg={4} xl={3} xxl={3} key={index}>
+            <Col xs={6} sm={6} md={5} lg={5} xl={4} xxl={3} key={index} className="d-flex justify-content-center" >
               <div
                 className="tarjet-home"
                 style={{ backgroundImage: `url(${category.image})` }}

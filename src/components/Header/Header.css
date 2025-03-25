@@ -1,9 +1,13 @@
 .header-container {
   
   /* padding: 10px 40px; */
+  position: sticky;
+  top: 0;
  
   border: 2px solid gray;
+  z-index: 90;
 
+  background-color: white;
   .items-cart {
     display: flex;
     align-items: center;

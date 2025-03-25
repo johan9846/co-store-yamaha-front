@@ -8,6 +8,6 @@
   .scroll-cont {
     flex: 1; /* Ocupa todo el espacio sobrante */
 /*     border: 3px solid #ff0000; */
-    overflow: auto;
+    
   }
   

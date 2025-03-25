@@ -6,11 +6,12 @@
 
 .image-banner {
   width: 100%;
+ 
 }
 
 .container-card {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   cursor: pointer;
 
 }
@@ -18,7 +19,7 @@
 
 
 .tarjet-home {
-    width: 100%;
+    width: 80%;
     height: 320px;
     text-align: center;
     border-radius: 15px;
@@ -30,6 +31,7 @@
     justify-content: flex-end;
     overflow: hidden;
     transition: background-size 0.3s ease; /* Suaviza el cambio */
+  
 
     @media screen and (max-width: 768px) {
         height: 200px;
@@ -44,7 +46,6 @@
     font-weight: bold;
     font-size: 20px;
     background: #bbb9b9cc;
-   
     padding: 5px;
     transition: all 0.3s ease;
   }
