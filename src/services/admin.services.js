@@ -54,13 +54,3 @@ export const getSearchProduct = async (query) => {
 };
 
 
-export const pay = async (name,last_name,phone, email, value, paymentMethod) => {
-  return Axios.post(`${apiUrl}/api/pay`, {
-    name,
-    last_name,
-    email,
-    value,
-    phone,
-    paymentMethod,
-  });
-};

@@ -15,7 +15,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./CartItem.css";
 
 export const CartItem = () => {
@@ -31,8 +31,26 @@ export const CartItem = () => {
   };
 
   const [totalAmount, setTotalAmount] = useState("");
+
   const formatCurrency = (value) =>
     `$ ${Number(value || 0).toLocaleString("es-CO")}`;
+
+
+  const formatCurrencyString = (value) => {
+    if (!value) return ""; // Si es null o undefined, retorna cadena vacía
+    const number = Number(String(value).replace(/\D/g, "")); // Convertir a string antes de replace
+    return number.toLocaleString("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+    });
+  };
+
+  const parseValue = (formattedValue) => {
+    return String(formattedValue).replace(/\D/g, ""); // Asegurar que es string antes de replace
+  };
+
+
   const {
     productData,
     incrementQuantity,
@@ -58,8 +76,7 @@ export const CartItem = () => {
           message: "El correo electrónico no es valido",
         }
       ),
-    value: z.number().min(1000, "El monto mínimo es 1000 COP"),
-    paymentMethod: z.enum(["NEQUI", "PSE"]),
+    value: z.string(),
   });
 
   const {
@@ -70,14 +87,14 @@ export const CartItem = () => {
   } = useForm({
     resolver: zodResolver(schema),
     mode: "onTouched",
-    defaultValues: {
-      name: "",
-      last_name: "",
-      phone: "",
-      email: "",
-      paymentMethod: "NEQUI",
-    },
   });
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.epayco.co/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
   useMemo(() => {
     let price = 0;
@@ -86,11 +103,37 @@ export const CartItem = () => {
       return price;
     });
     setTotalAmount(price);
-    setValue("value", price);
+    setValue("value", parseValue(price)); // Guarda solo los números como string
   }, [productData]);
 
   const onSubmit = (data) => {
-    console.log(data, "data");
+    console.log(typeof data.value, data.value);
+
+     if (!window.ePayco) {
+      console.error("ePayco no está cargado");
+      return;
+    }
+    const handler = window.ePayco.checkout.configure({
+      key: "3bba8ce2f239a7ff092c442200dc3514",
+      test: true, // true = pruebas, false = producción
+    });
+    handler.open({
+      method: "PSE",
+      bank: "", // El usuario elegirá el banco
+      amount: "50000", // Valor del pago
+      currency: "COP",
+      tax: "0",
+      tax_base: "0",
+      name: `${data.name} ${data.last_name}`,
+      description: "Pago con PSE",
+      invoice: "INV-" + new Date().getTime(), // Número de factura único
+      email: data.email,
+      extra1: data.phone, // Puedes enviar el teléfono como dato adicional
+      response: "https://tusitio.com/respuesta", // URL donde redirige después del pago
+      confirmation: "https://tusitio.com/api/confirmacion", // Webhook para verificar pago
+      country: "CO",
+      lang: "es",
+    }); 
   };
 
   const isNumber = (character) => {
@@ -98,7 +141,6 @@ export const CartItem = () => {
     return code >= 48 && code <= 57; // Código ASCII del 0 al 9
   };
 
-  const handleCheckout = () => {};
   return (
     <>
       <Container className="container-cart-item">
@@ -226,7 +268,6 @@ export const CartItem = () => {
                             />
                           )}
                         />
-
                         <Controller
                           name="last_name"
                           control={control}
@@ -241,7 +282,6 @@ export const CartItem = () => {
                             />
                           )}
                         />
-
                         <Controller
                           name="phone"
                           control={control}
@@ -277,7 +317,6 @@ export const CartItem = () => {
                             />
                           )}
                         />
-
                         <Controller
                           name="email"
                           control={control}
@@ -293,54 +332,33 @@ export const CartItem = () => {
                             />
                           )}
                         />
-
                         <Controller
                           name="value"
                           control={control}
-                          render={({ field }) => (
+                          defaultValue=""
+                          render={({
+                            field: { onChange, value, ...field },
+                          }) => (
                             <TextField
                               {...field}
                               label="Monto"
                               type="text"
-                              disabled={true}
                               fullWidth
                               margin="normal"
                               error={!!errors.value}
+                              disabled={true}
                               helperText={
                                 !!errors.value && "Ingresa un número mayor a 0"
                               }
+                              value={value ? formatCurrencyString(value) : "$ 0"}
                               onChange={(e) => {
-                                const numericValue = e.target.value.replace(
-                                  /[^0-9]/g,
-                                  ""
-                                );
-                                field.onChange(
-                                  numericValue ? Number(numericValue) : 0
-                                );
+                                const rawValue = parseValue(e.target.value); // Quita puntos y símbolos
+                                onChange(rawValue); // Guarda solo los números en el estado
                               }}
-                              value={formatCurrency(field.value)}
                             />
                           )}
                         />
-
-                        <Controller
-                          name="paymentMethod"
-                          control={control}
-                          render={({ field }) => (
-                            <FormControl
-                              fullWidth
-                              margin="normal"
-                              error={!!errors.paymentMethod}
-                            >
-                              <InputLabel>Método de Pago</InputLabel>
-                              <Select {...field} label="Método de Pago">
-                                <MenuItem value="NEQUI">Nequi</MenuItem>
-                                <MenuItem value="PSE">PSE</MenuItem>
-                              </Select>
-                            </FormControl>
-                          )}
-                        />
-
+                        
                         <div className="mt-3">
                           <Button
                             type="submit"
