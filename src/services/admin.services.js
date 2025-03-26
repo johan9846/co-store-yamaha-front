@@ -52,3 +52,15 @@ export const getFilterProduct = async (brand, model, category_id) => {
 export const getSearchProduct = async (query) => {
   return Axios.post(`${apiUrl}/products/search`, { query }); // Envía el término de búsqueda en un objeto
 };
+
+
+export const pay = async (name,last_name,phone, email, value, paymentMethod) => {
+  return Axios.post(`${apiUrl}/api/pay`, {
+    name,
+    last_name,
+    email,
+    value,
+    phone,
+    paymentMethod,
+  });
+};

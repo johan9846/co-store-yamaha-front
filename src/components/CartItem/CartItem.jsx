@@ -1,5 +1,15 @@
 import CloseIcon from "@mui/icons-material/Close";
-
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import { useCartStore } from "../../store/use-cart-store";
 import { Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
@@ -7,7 +17,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useMemo, useState } from "react";
 import "./CartItem.css";
-import { Button } from "@mui/material";
 
 export const CartItem = () => {
   const carouselSettings = {
@@ -32,6 +41,44 @@ export const CartItem = () => {
     resetCart,
   } = useCartStore();
 
+  const schema = z.object({
+    name: z.string().min(2, "El nombre es obligatorio"),
+    last_name: z.string().min(2, "El apellido es obligatorio"),
+    phone: z.string().regex(/^\d{10}$/, "El teléfono debe tener 10 dígitos"),
+    email: z
+      .string({
+        required_error: "El correo electrónico no puede estar vacío",
+      })
+      .refine(
+        (value) =>
+          /^(?=[^@]*[A-Za-z])([a-zA-Z0-9])(([a-zA-Z0-9*])*([\:._-])?([a-zA-Z0-9]))*@(([a-zA-Z0-9\-])+(\.))+([a-zA-Z]{2,4})+$/gi.test(
+            value
+          ),
+        {
+          message: "El correo electrónico no es valido",
+        }
+      ),
+    value: z.number().min(1000, "El monto mínimo es 1000 COP"),
+    paymentMethod: z.enum(["NEQUI", "PSE"]),
+  });
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+    mode: "onTouched",
+    defaultValues: {
+      name: "",
+      last_name: "",
+      phone: "",
+      email: "",
+      paymentMethod: "NEQUI",
+    },
+  });
+
   useMemo(() => {
     let price = 0;
     productData.map((item) => {
@@ -39,7 +86,17 @@ export const CartItem = () => {
       return price;
     });
     setTotalAmount(price);
+    setValue("value", price);
   }, [productData]);
+
+  const onSubmit = (data) => {
+    console.log(data, "data");
+  };
+
+  const isNumber = (character) => {
+    const code = character.charCodeAt(0);
+    return code >= 48 && code <= 57; // Código ASCII del 0 al 9
+  };
 
   const handleCheckout = () => {};
   return (
@@ -144,35 +201,159 @@ export const CartItem = () => {
             ))}
           </Col>
 
-          <Col className="tarjet-pay mt-5 mt-xl-3 ">
+          <Col className="tarjet-pay mt-5 mt-xl-3">
             <Row className="justify-content-center">
               <Col xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
-                <h2>Total</h2>
+                <div className="card-pay">
+                  <h2>Total</h2>
+                  <span>COP {formatCurrency(totalAmount)}</span>
+                  <hr />
 
-                <span> COP {formatCurrency(totalAmount)}</span>
-                <p className="mt-4">
-                  <span>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Quos, Veritatis
-                  </span>
-                </p>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    {productData.length > 0 && (
+                      <>
+                        <Controller
+                          name="name"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Nombre"
+                              fullWidth
+                              margin="normal"
+                              error={!!errors.name}
+                              helperText={errors.name?.message}
+                            />
+                          )}
+                        />
 
-                <hr></hr>
+                        <Controller
+                          name="last_name"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Apellido"
+                              fullWidth
+                              margin="normal"
+                              error={!!errors.last_name}
+                              helperText={errors.last_name?.message}
+                            />
+                          )}
+                        />
 
-                <div className="total mt-5">
-                  <div> Total</div>
+                        <Controller
+                          name="phone"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Teléfono"
+                              fullWidth
+                              margin="normal"
+                              value={field.value}
+                              error={!!errors.phone}
+                              helperText={errors.phone?.message}
+                              onChange={(e) => {
+                                let value = e.target.value;
 
-                  <div>{formatCurrency(totalAmount)}</div>
-                </div>
-                <div className="mt-3">
-                  <Button
-                    onClick={handleCheckout}
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                  >
-                    Pagar
-                  </Button>
+                                // Filtrar caracteres que no sean números
+                                value = value
+                                  .split("")
+                                  .filter((char) => isNumber(char))
+                                  .join("");
+
+                                // Limitar a 10 dígitos
+                                if (value.length > 10)
+                                  value = value.substring(0, 10);
+
+                                // Validar que empiece con "3"
+                                if (value.length > 0 && value[0] !== "3")
+                                  value = "";
+
+                                // Actualizar el valor en el formulario
+                                field.onChange(value);
+                              }}
+                            />
+                          )}
+                        />
+
+                        <Controller
+                          name="email"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Correo Electrónico"
+                              type="email"
+                              fullWidth
+                              margin="normal"
+                              error={!!errors.email}
+                              helperText={errors.email?.message}
+                            />
+                          )}
+                        />
+
+                        <Controller
+                          name="value"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              label="Monto"
+                              type="text"
+                              disabled={true}
+                              fullWidth
+                              margin="normal"
+                              error={!!errors.value}
+                              helperText={
+                                !!errors.value && "Ingresa un número mayor a 0"
+                              }
+                              onChange={(e) => {
+                                const numericValue = e.target.value.replace(
+                                  /[^0-9]/g,
+                                  ""
+                                );
+                                field.onChange(
+                                  numericValue ? Number(numericValue) : 0
+                                );
+                              }}
+                              value={formatCurrency(field.value)}
+                            />
+                          )}
+                        />
+
+                        <Controller
+                          name="paymentMethod"
+                          control={control}
+                          render={({ field }) => (
+                            <FormControl
+                              fullWidth
+                              margin="normal"
+                              error={!!errors.paymentMethod}
+                            >
+                              <InputLabel>Método de Pago</InputLabel>
+                              <Select {...field} label="Método de Pago">
+                                <MenuItem value="NEQUI">Nequi</MenuItem>
+                                <MenuItem value="PSE">PSE</MenuItem>
+                              </Select>
+                            </FormControl>
+                          )}
+                        />
+
+                        <div className="mt-3">
+                          <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                          >
+                            Pagar
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </form>
                 </div>
               </Col>
             </Row>

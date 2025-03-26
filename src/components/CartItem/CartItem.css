@@ -82,7 +82,12 @@
       font-size: 18px;
       font-weight: bold;
     }
- 
+   
+    .card-pay{
+      border: 2px solid gray;
+      border-radius: 10px;
+      padding: 30px 20px;
+    }
   }
 
   .reset-cart {
