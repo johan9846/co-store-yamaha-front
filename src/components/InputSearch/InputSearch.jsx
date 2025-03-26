@@ -4,12 +4,10 @@ import {
   Autocomplete,
   TextField,
   InputAdornment,
-  IconButton,
   useMediaQuery,
-  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
+
 import { getSearchProduct } from "../../services/admin.services";
 import debounce from "debounce";
 import "./InputSearch.css";
@@ -17,7 +15,6 @@ import "./InputSearch.css";
 const InputSearch = () => {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [search, setSearch] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,8 +51,6 @@ const InputSearch = () => {
   );
 
   const handleInputChange = (event, value, reason) => {
-    setSearch(value);
-
     if (reason === "input") {
       handleSearch(value);
       if (value.length > 0) {
@@ -71,15 +66,8 @@ const InputSearch = () => {
       navigate(`/home/repuestos/product/${product.id}`);
     }
     setOpen(false);
-    setSearch(product?.name || "");
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setSearch("");
-    setIsFocused(false);
-
-  };
   const formatCurrency = (value) =>
     `${Number(value || 0).toLocaleString("es-CO")}`;
   return (
@@ -98,6 +86,9 @@ const InputSearch = () => {
               width:
                 isFocused && isMobile ? "80vw" : isFocused ? "50vw" : "100%",
             },
+            "& .MuiAutocomplete-popupIndicator": {
+              display: "none !important", // Oculta el icono de dropdown
+            },
           }}
           className={`search-input ${isFocused ? "search-input-top" : ""}`}
           options={filteredProducts}
@@ -105,7 +96,6 @@ const InputSearch = () => {
           loading={isLoading}
           onInputChange={handleInputChange}
           onChange={handleDetails}
-          inputValue={search}
           onBlur={() => {
             setOpen(false);
             setIsFocused(false);
@@ -130,19 +120,6 @@ const InputSearch = () => {
                   <InputAdornment position="start">
                     <SearchIcon />
                   </InputAdornment>
-                ),
-                endAdornment: (
-                  <>
-                    {isLoading ? (
-                      <CircularProgress color="inherit" size={20} />
-                    ) : (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleClose}>
-                          <CloseIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    )}
-                  </>
                 ),
               }}
             />
