@@ -79,8 +79,7 @@ Para ejecutar el frontend en tu entorno local:
 1. **Clonar el repositorio**
 
    ```bash
-   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
-   cd TU_REPOSITORIO
+   git clone https://github.com/johan9846/co-store-yamaha-front.git
    ```
 
 2. **Crear el archivo de variables de entorno**
