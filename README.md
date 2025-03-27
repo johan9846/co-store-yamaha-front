@@ -1,14 +1,32 @@
-# co-store-yamaha-front
-
 # 🛍️ E-Commerce con React.js y ePayco
 
-Este Backend de una aplica
+Esta aplicación de comercio electrónico, desarrollada en **React.js**, ofrece una experiencia de compra en línea intuitiva y eficiente.
 
 ## 🚀 Características
 
 - **Pagos con ePayco:** Soporte para pagos con Nequi, PSE y Efecty.
 - **Interfaz moderna:** Construida con React.js y estilizada con CSS/Sass.
 - **Backend con Node.js y PostgreSQL:** Manejo eficiente de productos, categorías y pagos.
+
+---
+
+## 🛠️ Tecnologías Utilizadas  
+
+### **Frontend**  
+- **React.js**: Construcción de una interfaz de usuario moderna y dinámica.  
+- **CSS/Sass**: Estilización personalizada para mejorar la experiencia del usuario.  
+
+### **Backend**  
+- **Node.js**: Servidor backend eficiente y escalable.  
+- **Express.js**: Framework para la gestión de rutas y controladores.  
+
+### **Base de Datos**  
+- **PostgreSQL**: Base de datos relacional que garantiza la integridad y seguridad de los datos.  
+- **Prisma ORM**: Facilita la gestión de la base de datos y simplifica la interacción con los datos.  
+
+### **Funcionalidades del Backend**  
+- **CRUD de Productos y Categorías**: Controladores diseñados para la creación, lectura, actualización y eliminación de productos y categorías.  
+- **Autenticación y Autorización**: Gestión segura de usuarios y accesos.  
 
 ---
 
@@ -53,6 +71,40 @@ Para configurarlo, sigue estos pasos:
    ```
 
 ---
+
+### **2️⃣ Frontend**
+
+Para ejecutar el frontend en tu entorno local:
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+   cd TU_REPOSITORIO
+   ```
+
+2. **Crear el archivo de variables de entorno**
+
+   ```bash
+   mkdir env && cp .env.template env/.env
+   ```
+
+3. **Instalar dependencias**
+
+   ```bash
+   npm install
+   ```
+
+4. **Ejecutar el proyecto**
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+
+
 
 
 
