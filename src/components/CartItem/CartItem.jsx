@@ -118,9 +118,8 @@ export const CartItem = () => {
       test: true, // true = pruebas, false = producción
     });
     handler.open({
-      method: "PSE",
-      bank: "", // El usuario elegirá el banco
-      amount: "50000", // Valor del pago
+    
+      amount: data.value, // Valor del pago
       currency: "COP",
       tax: "0",
       tax_base: "0",

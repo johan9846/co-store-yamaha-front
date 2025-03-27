@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 
 export const useCartStore = create(
   persist(
@@ -61,7 +61,7 @@ export const useCartStore = create(
     }),
     {
       name: "bazar-storage",
-      storage: createJSONStorage(() => sessionStorage), // Especifica que se use sessionStorage // Asegura que se usa localStorage correctamente
+      storage: localStorage, // Especifica que se use sessionStorage // Asegura que se usa localStorage correctamente
     }
   )
 );
