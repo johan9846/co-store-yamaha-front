@@ -1,7 +1,7 @@
 # 🛍️ E-Commerce con React.js y ePayco
 
 Esta aplicación de comercio electrónico, desarrollada en **React.js**, ofrece una experiencia de compra en línea intuitiva y eficiente.
-
+![Descripción de la imagen](src/assets/readmeImages/store3.PNG)
 ## 🚀 Características
 
 - **Pagos con ePayco:** Soporte para pagos con Nequi, PSE y Efecty.
