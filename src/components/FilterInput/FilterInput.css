@@ -1,0 +1,65 @@
+.container-filter-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0039b1;
+  padding: 10px 0;
+ 
+
+}
+
+
+
+.icon-filter {
+  display: flex;
+  justify-content: center;
+  color: white;
+ 
+
+  img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+
+  @media screen and (max-width: 768px) {
+    text-decoration: underline;
+  }
+}
+.icon-close {
+  display: flex;
+  justify-content: end;
+}
+
+.panel-select {
+  width: 100%;
+  display: flex;
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    background-color: #0039b1;
+    top: 230px;
+
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+.container-form-select{
+  @media screen and (max-width: 768px) {
+    margin-top: 15px;
+  }
+}
+
+.container-form-select-button{
+  @media screen and (max-width: 768px) {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+.form-select {
+  border: 2px solid #ffffff;
+}

@@ -2,79 +2,116 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/use-cart-store";
 import { ToastContainer, toast } from "react-toastify";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "./ProductsCard.css";
+import { Button } from "@mui/material";
 
 export const ProductsCard = ({ product }) => {
+  const carouselSettings = {
+    dots: true, // Muestra puntos de navegación
+    infinite: true, // Permite navegación infinita
+    speed: 1000, // Velocidad de transición
+    autoplay: false,
+    autoplaySpeed: 2000,
+    slidesToShow: 1, // Muestra una imagen a la vez
+    slidesToScroll: 1, // Avanza de una en una
+    arrows: false, // Muestra flechas de navegación
+  };
+
   const { addToCart } = useCartStore();
 
-  const { title, oldPrice, price, image, category, isNew, description } =
-    product;
+  const {
+    id,
+    brands,
+    category,
+    name,
+    oldPrice,
+    price,
+    images,
+    rating,
+    description,
+  } = product;
 
   const navigate = useNavigate();
 
-  const _id = title;
-
-  const idString = (Title) => {
-    const newIdString = String(Title).toLowerCase().split(" ").join("");
-    return newIdString;
-  };
-  const rootId = idString(_id);
-  // console.log(rootId)
-
   const handleDetails = () => {
-    navigate(`/product/${rootId}`, {
-      state: {
-        item: product,
-      },
-    });
+    navigate(`/home/repuestos/product/${id}`);
   };
 
-
+  const formatCurrency = (value) =>
+    `${Number(value || 0).toLocaleString("es-CO")}`;
 
   return (
-    <div className="container-products-card mt-5">
-      <div className="image-container">
-        <img onClick={handleDetails} src={image} alt="" />
+    <div className="container-products-card">
+      <div className="container-carrousell">
+        <Slider {...carouselSettings} className="carrousell">
+          {images.map((image, index) => (
+            <img
+              key={index}
+              onClick={handleDetails}
+              src={image}
+              alt={`Imagen ${index + 1}`}
+              className="image-slick"
+            />
+          ))}
+        </Slider>
       </div>
 
-      <div>
-        <h2>{title}</h2>
+      <div className="mt-4">
+        <h2>{name}</h2>
       </div>
 
       <div className="category-price">
-        <div>{category}</div>
+        <div>{category.name}</div>
         <div className="container-price">
-          <div className="price">${price}</div>
-          <div className="old-price">${oldPrice}</div>
+          <div className="old-price">${formatCurrency(oldPrice)}  </div>
+          <div className="price">${formatCurrency(price)} </div>
         </div>
       </div>
 
+      <div className="mt-3 brands-container">
+        {brands.map((brand) => brand.name).join(", ")} -{" "}
+        {brands.map((brand) => brand.models.join(", ")).join(" | ")}
+      </div>
+
+      <div className="mt-2">{description}</div>
       <div className="mt-2">
-        <button
+        <Button
+          variant="contained" // O "outlined" si prefieres un borde en lugar de fondo
+          color="primary" // Puedes cambiar el color a "secondary", "success", etc.
           onClick={() => {
-             addToCart({
-              _id: product._id,
-              title: product.title,
-              image: product.image,
+            addToCart({
+              id: product.id,
+              brands: product.brands,
+              category: product.category.name,
+              name: product.name,
+              images: product.images,
               price: product.price,
+              quantity_stock: product.quantity_stock,
               quantity: 1,
               description: product.description,
-            }); 
+            });
 
             setTimeout(() => {
-              toast.success(`${product.title} is added`);
+              toast.success(`${product.name} agregado al carrito de compras`);
             }, 50);
           }}
+          disabled={
+            useCartStore
+              .getState()
+              .productData.find((item) => item.id === product.id)?.quantity >=
+            product.quantity_stock
+          }
         >
-         Agregar al Carrito
-        </button>
-        <div>{isNew && <p>Sale</p>}</div>
+          Agregar al Carrito
+        </Button>
       </div>
-      
 
-      <ToastContainer
-        position='top-left'
+   <ToastContainer
+        position="top-left"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -83,7 +120,8 @@ export const ProductsCard = ({ product }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='dark'
+        theme="dark"
+         className="toast-container"
       />
     </div>
   );

@@ -1,0 +1,57 @@
+.title-home {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.image-banner {
+  width: 100%;
+ 
+}
+
+.container-card {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+
+}
+
+
+
+.tarjet-home {
+    width: 80%;
+    height: 320px;
+    text-align: center;
+    border-radius: 15px;
+    background-size: 100% 100%;  /* Tamaño inicial */
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    transition: background-size 0.3s ease; /* Suaviza el cambio */
+  
+
+    @media screen and (max-width: 768px) {
+        height: 200px;
+      }
+  }
+  
+  .tarjet-home:hover {
+    background-size: 110% 110%;  /* Aumenta el tamaño de la imagen al hacer hover */
+  }
+  
+  .text-home {
+    font-weight: bold;
+    font-size: 20px;
+    background: #bbb9b9cc;
+    padding: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .tarjet-home:hover .text-home {
+    background-color: rgba(0, 0, 0, 0.8); /* Cambia el fondo al hacer hover */
+    color: white; /* Cambia el color del texto */
+  }
+  

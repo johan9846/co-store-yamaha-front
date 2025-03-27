@@ -1,123 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { Star as StarIcon, StarOutline as StarOutlineIcon } from "@mui/icons-material";
-
-
-import { ToastContainer, toast } from "react-toastify";
-
-import { Container, Row, Col } from "react-bootstrap";
-
-import { useCartStore } from "../../store/use-cart-store";
-
+import { getAllProductId } from "../../services/admin.services";
+import { useParams } from "react-router-dom";
+import { DetailProduct } from "../../components/DetailProduct/DetailProduct";
 import "./product.css";
 
 export const Product = () => {
-  const { addToCart } = useCartStore();
+  const { id } = useParams();
 
-  const [details, setDetails] = useState({});
-  let [baseQty, setBaseQty] = useState(1);
+  const [details, setDetails] = useState([]);
 
-  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+    
+
+  // detalle del producto dependiendo del id del producto 3 
+  const getProdctId = useCallback(async (id) => {
+    try {
+      const { data } = await getAllProductId(id);
+      console.log(data);
+      if (data) {
+        setDetails(data);
+      }
+    } catch (error) {
+      console.error("Error fetching :", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []); // Dependencias necesarias
+
   useEffect(() => {
-    setDetails(location.state.item);
-  }, []);
+    getProdctId(id);
+  }, [getProdctId, id]);
 
-
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, index) => 
-      index < rating ? <StarIcon key={index} /> : <StarOutlineIcon key={index} />
-    );
-  };
-
+  if (loading) return <p>Cargando...</p>;
   return (
     <>
-      <Container className="container-products-detail">
-        <Row>
-          <Col> 
-
-            <Row  style={{border:"2px solid green "}}>
-              <Col xs={12} sm={12} md={4} lg={4} xl={4} xxl={4} className="image-detail">
-                <img
-                  src={details.image}
-                  alt=""
-                />
-              </Col>
-
-              <Col>
-                <div>
-                  <h2>{details.title}</h2>
-
-                  <div className="category-price">
-                    <div className="container-price">
-                      <div className="price">${details.price}</div>
-                      <div className="old-price">${details.oldPrice}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-3">
-                <div>{renderStars(details.rating)}</div>
-                
-                </div>
-
-                <p className="mt-3">{details.description}</p>
-
-                <div className="container-amount">
-                  <div className="text-base text-black">Cantidad</div>
-
-                  <div className="amount-counter">
-                    <div className="button-amount"  onClick={() => setBaseQty(baseQty > 1 ? baseQty - 1 : 1)}> - </div>                    
-                                 
-                    <span style={{border:"2px solid red"}}>{baseQty}</span>
-
-                    <div className="button-amount" onClick={() => setBaseQty(baseQty + 1)}>+</div>
-                  </div>
-
-                  <button
-                    className="button-add"
-                    onClick={() =>
-
-                      addToCart({
-                        _id: details._id,
-                        title: details.title,
-                        image: details.image,
-                        price: details.price,
-                        quantity: baseQty,
-                        description: details.description,
-                      }) && toast.success(`${details.title} is added`)
-                    }
-                  >
-                    Añadir al Carrito
-                  </button>
-                </div>
-
-                <p className="mt-4">
-                  Categoria:{" "}
-                  <span >
-                    {details.category}
-                  </span>
-                </p>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-
-      <div>
-        <ToastContainer
-          position="top-left"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </div>
+      <DetailProduct details={details} />
     </>
   );
 };
