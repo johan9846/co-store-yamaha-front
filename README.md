@@ -83,10 +83,7 @@ Para ejecutar el frontend en tu entorno local:
    ```
 
 2. **Crear el archivo de variables de entorno**
-
-   ```bash
-   mkdir env && cp .env.template env/.env
-   ```
+   crear carpeta "env" y dentro crear archivo ".env" y dentro pegar lo que esta en .env.template
 
 3. **Instalar dependencias**
 
