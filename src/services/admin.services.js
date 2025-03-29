@@ -48,9 +48,15 @@ export const getFilterProduct = async (brand, model, category_id) => {
     `${apiUrl}/products/filter?brand=${brand}&model=${model}&category_id=${category_id}`
   );
 };
-
 export const getSearchProduct = async (query) => {
   return Axios.post(`${apiUrl}/products/search`, { query }); // Envía el término de búsqueda en un objeto
 };
 
 
+export const getAllOrder = async () => {
+  return Axios.get(`${apiUrl}/order/allOrder`);
+};
+
+export const addOrder = async (body) => {
+  return Axios.post(`${apiUrl}/order/addOrder`, body);
+};
