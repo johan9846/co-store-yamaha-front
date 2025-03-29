@@ -61,7 +61,7 @@ export const useCartStore = create(
     }),
     {
       name: "bazar-storage",
-      storage: localStorage, // Especifica que se use sessionStorage // Asegura que se usa localStorage correctamente
+      getStorage: () => localStorage, // Especifica que se use sessionStorage // Asegura que se usa localStorage correctamente
     }
   )
 );

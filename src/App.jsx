@@ -17,6 +17,8 @@ import { FilterResult } from "./pages/FilterResult/FilterResult";
 import { Repuestos } from "./pages/Repuestos/Repuestos";
 import "./App.css";
 import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategoria";
+import { Address } from "./components/address/address";
+import { Order } from "./pages/Order/Order";
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
@@ -100,6 +102,17 @@ function App() {
         {
           path: "home/repuestos/product/:id",
           element: <Product />,
+        },
+
+
+        {
+          path: "cart/address",
+          element: <Address />,
+        },
+
+        {
+          path: "cart/order",
+          element: <Order />,
         },
       ],
     },

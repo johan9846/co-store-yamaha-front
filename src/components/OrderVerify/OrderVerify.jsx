@@ -1,20 +1,19 @@
 import CloseIcon from "@mui/icons-material/Close";
-import {
-
-  Button,
-
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/use-cart-store";
 import { Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useEffect, useMemo, useState } from "react";
-import "./CartItem.css";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAddressStore } from "../../store/use-address-store"; // Importa la store
+import { addOrder, getAllOrder } from "../../services/admin.services";
+import "./OrderVerify.css";
 
-export const CartItem = () => {
-
+export const OrderVerify = () => {
+  const { name, last_name, phone, departament, city, address } =
+    useAddressStore();
 
   const navigate = useNavigate();
   const carouselSettings = {
@@ -30,17 +29,20 @@ export const CartItem = () => {
 
   const [totalAmount, setTotalAmount] = useState("");
 
-  const {
-    productData,
-    incrementQuantity,
-    deleteFromCart,
-    decrementQuantity,
-    resetCart,
-  } = useCartStore();
+  const { productData } = useCartStore();
 
 
+  const getOrder = useCallback(async () => {
+    try {
+      const { data } = await getAllOrder();
+      console.log(data, "ordenes")
+    
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+    }
+  }, []);
 
-  useMemo(() => {
+  useEffect(() => {
     let price = 0;
     productData.map((item) => {
       price += item.price * item.quantity;
@@ -49,46 +51,88 @@ export const CartItem = () => {
     setTotalAmount(price);
   }, [productData]);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.epayco.co/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
 
+
+    getOrder()
+  }, [getOrder]);
+
+  const getCreateOrder = useCallback(async () => {
+    const products = productData.map(({ id, name, quantity, price }) => ({
+      id,
+      name,
+      quantity,
+      price,
+    }));
+
+    try {
+      const newOrder = await addOrder({
+        name,
+        last_name,
+        phone,
+        departament,
+        city,
+        address,
+        products,
+      });
+
+      if (newOrder.status === 200) {
+        console.log(newOrder.data.data.id, "order")
+        if (!window.ePayco) {
+          console.error("ePayco no está cargado");
+          return;
+        }
+        const handler = window.ePayco.checkout.configure({
+          key: "3bba8ce2f239a7ff092c442200dc3514",
+          test: true, // true = pruebas, false = producción
+        });
+
+        handler.open({
+          amount: "115000",
+          currency: "COP",
+          tax: "0",
+          tax_base: "0",
+          name: `${name} ${last_name}`,
+          description: "Pago",
+          invoice: newOrder.data.data.id, // ID de la orden en la BD
+          extra1: newOrder.data.data.id, // Enviar el ID en extra1 para identificar la orden en el webhook
+          response: "http://localhost:5173/cart/order", // URL donde redirige después del pago
+          confirmation: "https://0df8-190-90-255-171.ngrok-free.app/order/pay", // Webhook para verificar pago
+          country: "CO",
+          lang: "es",
+        });
+      }
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+    }
+  }, []);
+
+  const onSubmit = (data) => {
+    getCreateOrder();
+  };
+
+
+   
+  
 
   const formatCurrency = (value) =>
     `$ ${Number(value || 0).toLocaleString("es-CO")}`;
 
-
-
-  const handleVerify = () => {
-    navigate(`/cart/address`)
-  }
-
-  
-
-
   return (
     <>
-      <Container className="container-cart-item">
+      <Container className="container-cart-item mb-4">
         <div>
-          <h2 className="mt-4">Carrito de compras</h2>
+          <h2 className="mt-4">Orden de Compra</h2>
         </div>
 
         <Row>
           <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
             {productData.map((item, key) => (
               <Row className="d-flex justify-content-center mt-5" key={key}>
-                <Col
-                  xs={1}
-                  sm={1}
-                  md={1}
-                  lg={1}
-                  xl={1}
-                  xxl={1}
-                  className="detele-item-cart"
-                >
-                  <CloseIcon
-                    onClick={() => deleteFromCart(item.id)}
-                    sx={{ cursor: "pointer" }}
-                  />
-                </Col>
-
                 <Col
                   xs={5}
                   sm={5}
@@ -143,21 +187,7 @@ export const CartItem = () => {
                   <div>Cantidad</div>
 
                   <div className="amount-counter">
-                    <div
-                      className="button-amount"
-                      onClick={() => decrementQuantity(item.id)}
-                    >
-                      -
-                    </div>
-
                     <span>{item.quantity}</span>
-
-                    <div
-                      className="button-amount"
-                      onClick={() => incrementQuantity(item.id)}
-                    >
-                      +
-                    </div>
                   </div>
                   <div>{formatCurrency(item.price * item.quantity)}</div>
                 </Col>
@@ -169,35 +199,40 @@ export const CartItem = () => {
             <Row className="justify-content-center">
               <Col xs={10} sm={10} md={10} lg={10} xl={10} xxl={10}>
                 <div className="card-pay">
+                  <div className="data-address">
+                    <h2>Datos de envío</h2>
+                    <div>
+                      {name} {last_name}
+                    </div>
+                    <div>{address}</div>
+                    <div>{phone}</div>
+                    <div>{departament}</div>
+                    <div>{city}</div>
+                  </div>
+
+                  <hr></hr>
                   <h2>Total</h2>
+                  <div className="d-flex justify-content-between">
+                    <div>No. Products</div>
+                    <div>{productData.length}</div>
+                  </div>
                   <span>COP {formatCurrency(totalAmount)}</span>
+
                   <hr />
 
                   <div className="mt-3">
                     <Button
-                      onClick={handleVerify}
+                      onClick={onSubmit}
                       fullWidth
                       variant="contained"
                       color="primary"
                     >
-                      Verificar
+                      Pagar
                     </Button>
                   </div>
                 </div>
               </Col>
             </Row>
-          </Col>
-        </Row>
-
-        <Row className="mt-5 mb-5">
-          <Col>
-            <Button
-              onClick={() => resetCart()}
-              variant="contained"
-              color="error"
-            >
-              Limpiar Carrito
-            </Button>
           </Col>
         </Row>
       </Container>
