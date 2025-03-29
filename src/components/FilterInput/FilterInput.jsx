@@ -96,22 +96,14 @@ export const FilterInput = () => {
     setSelectedBrand("");
     setSelectedModel("");
     setSelectedCategory("");
-    setOpenMobile(false)
+    setOpenMobile(false);
   };
 
   return (
     <Row className="container-filter-input">
-      <Col
-        xs={11}
-        sm={11}
-        md={4}
-        lg={3}
-        xl={2}
-        xxl={2}
-        className="icon-filter"
-      >
+      <Col xs={11} sm={11} md={4} lg={3} xl={2} xxl={2} className="icon-filter">
         <div onClick={() => setOpenMobile(true)}>
-          <img src={parts} alt="parts icon" />  Buscar partes
+          <img src={parts} alt="parts icon" /> Buscar partes
         </div>
       </Col>
 
@@ -125,7 +117,15 @@ export const FilterInput = () => {
               />
             </Col>
           )}
-          <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="container-form-select">
+          <Col
+            xs={11}
+            sm={11}
+            md={2}
+            lg={2}
+            xl={2}
+            xxl={2}
+            className="container-form-select"
+          >
             <select
               className="form-select"
               value={selectedBrand}
@@ -134,15 +134,25 @@ export const FilterInput = () => {
               }}
             >
               <option value="">Seleccione Marca</option>
-              {brands.map((brand) => (
-                <option key={brand.id} value={brand.name}>
-                  {brand.name}
-                </option>
-              ))}
+              {Array.isArray(brands)
+                ? brands.map((brand) => (
+                    <option key={brand.id} value={brand.name}>
+                      {brand.name}
+                    </option>
+                  ))
+                : null}
             </select>
           </Col>
 
-          <Col xs={11} sm={11} md={2} lg={2} xl={2} xxl={2} className="container-form-select">
+          <Col
+            xs={11}
+            sm={11}
+            md={2}
+            lg={2}
+            xl={2}
+            xxl={2}
+            className="container-form-select"
+          >
             <select
               className="form-select"
               value={selectedModel}
@@ -158,7 +168,15 @@ export const FilterInput = () => {
             </select>
           </Col>
 
-          <Col xs={11} sm={11} md={2} lg={2} xl={3} xxl={3} className="container-form-select">
+          <Col
+            xs={11}
+            sm={11}
+            md={2}
+            lg={2}
+            xl={3}
+            xxl={3}
+            className="container-form-select"
+          >
             <select
               className="form-select"
               value={selectedCategory}
@@ -174,7 +192,15 @@ export const FilterInput = () => {
             </select>
           </Col>
 
-          <Col xs={11} sm={11} md={2} lg={2} xl={1} xxl={1} className="container-form-select-button" >
+          <Col
+            xs={11}
+            sm={11}
+            md={2}
+            lg={2}
+            xl={1}
+            xxl={1}
+            className="container-form-select-button"
+          >
             <Button
               onClick={handleSearch}
               disabled={!selectedBrand || !selectedModel || !selectedCategory}

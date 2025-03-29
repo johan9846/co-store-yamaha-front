@@ -1,0 +1,108 @@
+.container-cart-item {
+  max-width: 100% !important;
+
+  padding: 0 20px;
+
+  .detele-item-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .data-address {
+    font-size: 18px;
+  }
+
+  .image-cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container-carrousell {
+    width: 100%;
+    max-width: 180px;
+    max-height: 130px;
+
+    .image-slick {
+      height: 130px;
+      width: 100%;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .image-slick:hover {
+      transform: scale(1.1);
+    }
+
+    .slick-dots li button:before {
+      color: rgb(121, 117, 117) !important; /* Color de los puntos inactivos */
+      opacity: 1 !important; /* Asegura que siempre sea visible */
+      font-size: 7px; /* Opcional: ajusta el tamaño */
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: #0039b1 !important;
+    }
+  }
+
+  .title-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    flex-direction: column;
+  }
+
+  .container-amount {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+
+    .amount-counter {
+      display: flex;
+      gap: 10px;
+
+      .button-amount {
+        padding: 0 10px;
+
+        cursor: pointer;
+      }
+    }
+  }
+
+  .tarjet-pay {
+    .total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .card-pay {
+      border: 2px solid gray;
+      border-radius: 10px;
+      padding: 30px 20px;
+    }
+  }
+  .alert {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    color: #ffffff;
+  }
+  
+  .alert_paid {
+    background-color: green;
+  }
+  
+  .alert_no_paid {
+    background-color: red !important;
+  }
+  
+  
+}

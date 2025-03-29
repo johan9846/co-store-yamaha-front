@@ -60,3 +60,12 @@ export const getAllOrder = async () => {
 export const addOrder = async (body) => {
   return Axios.post(`${apiUrl}/order/addOrder`, body);
 };
+
+
+
+export const getOrderId = async (body) => {
+  return Axios.post(`${apiUrl}/order/getOrderById`, body);
+};
+
+
+

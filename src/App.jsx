@@ -19,6 +19,7 @@ import "./App.css";
 import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategoria";
 import { Address } from "./components/address/address";
 import { Order } from "./pages/Order/Order";
+import { OrderPay } from "./pages/OrderPay/OrderPay";
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
@@ -113,6 +114,11 @@ function App() {
         {
           path: "cart/order",
           element: <Order />,
+        },
+
+        {
+          path: "cart/order/id/:id",
+          element: <OrderPay />,
         },
       ],
     },
