@@ -179,6 +179,7 @@ export const CartItem = () => {
                       fullWidth
                       variant="contained"
                       color="primary"
+                      disabled={productData.length===0}
                     >
                       Verificar
                     </Button>

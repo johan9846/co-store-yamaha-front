@@ -1,22 +1,22 @@
-import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+
 import { useCartStore } from "../../store/use-cart-store";
 import { Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAddressStore } from "../../store/use-address-store"; // Importa la store
-import { addOrder, getAllOrder } from "../../services/admin.services";
-import "./OrderVerify.css";
+import { getOrderId } from "../../services/admin.services";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import "./OrderComponentPay.css";
 
-export const OrderVerify = () => {
-
+export const OrderComponentPay = () => {
+  const { id } = useParams();
   const { name, last_name, phone, departament, city, address } =
     useAddressStore();
 
-  const navigate = useNavigate();
   const carouselSettings = {
     dots: true, // Muestra puntos de navegación
     infinite: true, // Permite navegación infinita
@@ -29,10 +29,9 @@ export const OrderVerify = () => {
   };
 
   const [totalAmount, setTotalAmount] = useState("");
+  const [dataOrder, setDataOrder] = useState(false);
 
-  const { productData } = useCartStore();
-
-
+  const { productData, resetCart } = useCartStore();
 
   useEffect(() => {
     let price = 0;
@@ -43,42 +42,76 @@ export const OrderVerify = () => {
     setTotalAmount(price);
   }, [productData]);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.epayco.co/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    fetchOrderById(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (dataOrder.isPaid) {
+      resetCart();
+    }
+  }, [dataOrder]);
+
+  const fetchOrderById = async () => {
+    try {
+      const { data } = await getOrderId({ id }); // Llama a la API enviando el ID en el body
+      setDataOrder(data.data);
+      return data.data.id;
+    } catch (error) {
+      console.error("Error al obtener la orden:", error);
+      return { error: "No se pudo obtener la orden" }; // Devuelve un error manejado
+    }
+  };
+
+  console.log(dataOrder.id);
 
   const getCreateOrder = useCallback(async () => {
-    const products = productData.map(({ id, name, quantity, price }) => ({
-      id,
-      name,
-      quantity,
-      price,
-    }));
-
     try {
-      const newOrder = await addOrder({
-        name,
-        last_name,
-        phone,
-        departament,
-        city,
-        address,
-        products,
+      if (!window.ePayco) {
+        console.error("ePayco no está cargado");
+        return;
+      }
+
+      const idData = await fetchOrderById();
+
+      let price = 0;
+      productData.map((item) => {
+        price += item.price * item.quantity;
+        return price;
       });
 
+      const handler = window.ePayco.checkout.configure({
+        key: "3bba8ce2f239a7ff092c442200dc3514",
+        test: true, // true = pruebas, false = producción
+      });
 
-      if (newOrder.status === 200) {
-     navigate(`/cart/order/id/${newOrder.data.data.id}`)
-      }
+      handler.open({
+        amount: String(price),
+        currency: "COP",
+        tax: "0",
+        tax_base: "0",
+        name: `${name} ${last_name}`,
+        description: "Pago",
+        invoice: idData, // ID de la orden en la BD
+        extra1: idData, // Enviar el ID en extra1 para identificar la orden en el webhook
+        response: "http://localhost:5173/cart/order", // URL donde redirige después del pago
+        confirmation: "https://7bdc-190-90-255-166.ngrok-free.app/order/pay", // Webhook para verificar pago
+        country: "CO",
+        lang: "es",
+      });
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
   }, []);
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     getCreateOrder();
   };
-
-
-   
-  
 
   const formatCurrency = (value) =>
     `$ ${Number(value || 0).toLocaleString("es-CO")}`;
@@ -87,9 +120,23 @@ export const OrderVerify = () => {
     <>
       <Container className="container-cart-item mb-4">
         <div>
-          <h2 className="mt-4">Orden de Compra</h2>
+          <h2 className="mt-4">
+            Orden de Compra <strong>{id}</strong>
+          </h2>
         </div>
 
+        <Row>
+          <Col xs={8} sm={8} md={4} lg={4} xl={4} xxl={4}>
+            <div
+              className={`alert ${
+                dataOrder.isPaid ? "alert_paid" : "alert_no_paid"
+              }`}
+            >
+              <CreditCardOutlinedIcon fontSize="large" />
+              {dataOrder.isPaid ? "Paid" : "No paid"}
+            </div>
+          </Col>
+        </Row>
         <Row>
           <Col xs={12} sm={12} md={8} lg={8} xl={8} xxl={8}>
             {productData.map((item, key) => (
@@ -162,6 +209,7 @@ export const OrderVerify = () => {
                 <div className="card-pay">
                   <div className="data-address">
                     <h2>Datos de envío</h2>
+
                     <div>
                       {name} {last_name}
                     </div>
@@ -179,6 +227,15 @@ export const OrderVerify = () => {
                   </div>
                   <span>COP {formatCurrency(totalAmount)}</span>
 
+                  <div
+                    className={` mt-2 alert ${
+                      dataOrder.isPaid ? "alert_paid" : "alert_no_paid"
+                    }`}
+                  >
+                    <CreditCardOutlinedIcon fontSize="large" />
+                    {dataOrder.isPaid ? "Paid" : "No paid"}
+                  </div>
+
                   <hr />
 
                   <div className="mt-3">
@@ -187,9 +244,9 @@ export const OrderVerify = () => {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      disabled={productData.length===0}
+                      disabled={dataOrder.isPaid || productData.length === 0}
                     >
-                      Crear Orden
+                      Pagar
                     </Button>
                   </div>
                 </div>
