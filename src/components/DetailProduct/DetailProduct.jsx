@@ -3,7 +3,7 @@ import {
   Star as StarIcon,
   StarOutline as StarOutlineIcon,
 } from "@mui/icons-material";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import { Container, Row, Col } from "react-bootstrap";
 import { useCartStore } from "../../store/use-cart-store";
 import Slider from "react-slick";
@@ -192,19 +192,7 @@ export const DetailProduct = ({ details }) => {
         </Col>
       </Row>
 
-      <ToastContainer
-        position="top-left"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        className="toast-container"
-      />
+
     </Container>
   );
 };

@@ -3,10 +3,7 @@
   border: 2px solid gray;
   border-radius: 10px;
 
-  .toast-container {
-    max-width: 90%; /* Ajusta el ancho */
-    left: 5% !important; /* Centrarlo */
-  }
+ 
 
   .container-carrousell {
     width: 100%;

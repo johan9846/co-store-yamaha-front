@@ -20,6 +20,7 @@ import { RepuestosCategoria } from "./pages/RepuestosCategoria/RepuestosCategori
 import { Address } from "./components/address/address";
 import { Order } from "./pages/Order/Order";
 import { OrderPay } from "./pages/OrderPay/OrderPay";
+import { ToastContainer } from "react-toastify";
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
@@ -27,8 +28,22 @@ const Layout = () => {
     <div className="principal">
       <Header />
       <ScrollRestoration />
-      <div className="scroll-cont">  <Outlet /></div>
-    
+      <div className="scroll-cont">
+        <ToastContainer
+          position="top-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          className="toast-container"
+        />{" "}
+        <Outlet />
+      </div>
     </div>
   );
 };
@@ -57,7 +72,7 @@ function App() {
     getProducts();
   }, [getProducts]);
 
-/*   if (dataProduct.length === 0) {
+  /*   if (dataProduct.length === 0) {
     return <p>Cargando productos...</p>;
   } */
 
@@ -71,7 +86,6 @@ function App() {
           element: <Navigate to="/home" replace />, // Redirección inicial a /home
         },
 
-       
         {
           path: "products/filter",
           element: <FilterResult />,
@@ -98,13 +112,12 @@ function App() {
         {
           path: "home/repuestos/:id",
           element: <RepuestosCategoria replace />,
-        }, 
-        
+        },
+
         {
           path: "home/repuestos/product/:id",
           element: <Product />,
         },
-
 
         {
           path: "cart/address",

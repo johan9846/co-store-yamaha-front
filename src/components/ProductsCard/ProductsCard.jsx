@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCartStore } from "../../store/use-cart-store";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -110,19 +110,7 @@ export const ProductsCard = ({ product }) => {
         </Button>
       </div>
 
-   <ToastContainer
-        position="top-left"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-         className="toast-container"
-      />
+ 
     </div>
   );
 };

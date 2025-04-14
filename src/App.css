@@ -1,13 +1,20 @@
 .principal {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Hace que ocupe toda la pantalla */
-/*     border: 2px solid #0037ff; */
-  }
-  
-  .scroll-cont {
-    flex: 1; /* Ocupa todo el espacio sobrante */
-/*     border: 3px solid #ff0000; */
-    overflow: auto;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Hace que ocupe toda la pantalla */
+  /*     border: 2px solid #0037ff; */
+}
+
+.scroll-cont {
+  flex: 1; /* Ocupa todo el espacio sobrante */
+/*   border: 7px solid #ff0000; */
+  overflow: auto;
+}
+
+.toast-container {
+  max-width: 90%;
+  left: 5% !important;
+  position: absolute !important;
+  top: 10% !important;
+  z-index: 1;/
+}
