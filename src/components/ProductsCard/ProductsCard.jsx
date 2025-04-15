@@ -97,7 +97,7 @@ export const ProductsCard = ({ product }) => {
 
             setTimeout(() => {
               toast.success(`${product.name} agregado al carrito de compras`);
-            }, 50);
+            }, 100);
           }}
           disabled={
             useCartStore

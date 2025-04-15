@@ -170,7 +170,7 @@ export const DetailProduct = ({ details }) => {
                       toast.success(
                         `${details.name} agregado al carrito de compras`
                       );
-                    }, 50);
+                    }, 100);
                   }}
                   disabled={
                     baseQty >= details.quantity_stock ||
