@@ -9,12 +9,13 @@
   flex: 1; /* Ocupa todo el espacio sobrante */
 /*   border: 7px solid #ff0000; */
   overflow: auto;
+  position: relative;
 }
 
 .toast-container {
   max-width: 90%;
   left: 5% !important;
-  position: absolute !important;
+  position: fixed;
   top: 10% !important;
-  z-index: 1;/
+  z-index: 1;
 }
