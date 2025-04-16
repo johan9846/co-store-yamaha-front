@@ -23,6 +23,9 @@ import { OrderPay } from "./pages/OrderPay/OrderPay";
 import { ToastContainer } from "react-toastify";
 
 import { ThemeProvider } from "./context/ThemeContext";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import { IconButton, Tooltip } from "@mui/material";
+
 
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
@@ -31,6 +34,27 @@ const Layout = () => {
       <Header />
       <ScrollRestoration />
       <div className="scroll-cont">
+      <Tooltip title="Contáctanos por WhatsApp" placement="left">
+        <IconButton
+          sx={{
+            position: "fixed",
+            bottom: 90,
+            right: 90,
+            backgroundColor: "#25D366",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#20ba5a",
+            },
+            zIndex: 1000,
+          }}
+          onClick={() =>
+            window.open("https://wa.me/573148893889", "_blank") // Reemplaza por tu número
+          }
+        >
+          <WhatsAppIcon />
+        </IconButton>
+      </Tooltip>
+       
         <ToastContainer
           position="top-left"
           autoClose={2000}
@@ -69,10 +93,10 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
+/*   useEffect(() => {
     console.log("productooooooossss");
     getProducts();
-  }, [getProducts]);
+  }, [getProducts]); */
 
   /*   if (dataProduct.length === 0) {
     return <p>Cargando productos...</p>;
@@ -143,6 +167,7 @@ function App() {
     <ThemeProvider>
     <div className="app">
       <RouterProvider router={router} />
+      
     </div>
     </ThemeProvider>
   );
