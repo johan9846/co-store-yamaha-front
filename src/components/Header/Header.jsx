@@ -7,13 +7,25 @@ import { FilterInput } from "../FilterInput/FilterInput";
 import InputSearch from "../InputSearch/InputSearch";
 import { Badge } from "@mui/material";
 import "./Header.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext"; // asegúrate que la ruta es correcta
 
 export const Header = () => {
   const { productData } = useCartStore();
+  const { darkMode, toggleTheme } = useContext(ThemeContext);
+
   return (
     <Container fluid className="header-container">
       <Row>
-        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="mb-2 mb-md-0">
+        <Col
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+          xxl={12}
+          className="mb-2 mb-md-0"
+        >
           <Row className="items-cart">
             <Col
               xs={12}
@@ -62,9 +74,28 @@ export const Header = () => {
                     },
                   }}
                 >
-                  <ShoppingCartIcon />
+                  <ShoppingCartIcon
+                    sx={{ color: darkMode ? "white":"black"   }}
+                  />
                 </Badge>
               </Link>
+
+              <button
+                onClick={toggleTheme}
+                className="btn-theme-toggle"
+                style={{
+                  marginTop: "8px",
+                  fontSize: "0.75rem",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  background: "transparent",
+                  color: "var(--text)",
+                  cursor: "pointer",
+                }}
+              >
+                {darkMode ? "Modo Claro" : "Modo Oscuro"}
+              </button>
             </Col>
           </Row>
         </Col>

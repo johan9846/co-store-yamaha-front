@@ -10,8 +10,12 @@ import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import "./RepuestosCategoria.css";
 import { InputAdornment, Pagination, TextField } from "@mui/material";
 import { SearchOutlined } from "@mui/icons-material";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext"; // Ajusta la ruta si es diferente
 
 export const RepuestosCategoria = () => {
+  const { darkMode } = useContext(ThemeContext);
+
   const { id } = useParams();
   const [dataCategories, setDataCategories] = useState([]);
 
@@ -90,6 +94,20 @@ export const RepuestosCategoria = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 borderRadius: "8px",
+                backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+                color: darkMode ? "#fff" : "#000",
+                "& fieldset": {
+                  borderColor: darkMode ? "#444" : "#ccc",
+                },
+                "&:hover fieldset": {
+                  borderColor: darkMode ? "#888" : "#000",
+                },
+              },
+              "& .MuiInputBase-input": {
+                color: darkMode ? "#fff" : "#000",
+              },
+              "& .MuiSvgIcon-root": {
+                color: darkMode ? "#aaa" : "#333",
               },
             }}
           />

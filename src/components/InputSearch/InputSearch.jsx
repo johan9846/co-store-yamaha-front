@@ -7,12 +7,16 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext"; // Ajusta si la ruta es distinta
 
 import { getSearchProduct } from "../../services/admin.services";
 import debounce from "debounce";
 import "./InputSearch.css";
 
 const InputSearch = () => {
+  const { darkMode } = useContext(ThemeContext);
+
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -77,17 +81,26 @@ const InputSearch = () => {
         <Autocomplete
           sx={{
             "& .MuiOutlinedInput-root": {
-              backgroundColor: "white",
-
+              backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+              color: darkMode ? "#fff" : "#000",
               "& .MuiOutlinedInput-notchedOutline": {
-                borderWidth: "2px", // Grosor del borde por defecto
+                borderColor: darkMode ? "#555" : "#ccc",
+                borderWidth: "2px",
               },
-
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: darkMode ? "#888" : "#000",
+              },
               width:
                 isFocused && isMobile ? "80vw" : isFocused ? "50vw" : "100%",
             },
             "& .MuiAutocomplete-popupIndicator": {
-              display: "none !important", // Oculta el icono de dropdown
+              display: "none !important",
+            },
+            "& .MuiInputBase-input": {
+              color: darkMode ? "#fff" : "#000",
+            },
+            "& .MuiSvgIcon-root": {
+              color: darkMode ? "#aaa" : "#333",
             },
           }}
           className={`search-input ${isFocused ? "search-input-top" : ""}`}

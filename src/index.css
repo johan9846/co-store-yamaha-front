@@ -5,8 +5,15 @@
  width: 100%;
  margin: 0  !important;
  padding: 0 !important;
+ --bg-color: #ffffff;
+ --text-color: #000000;
 }
 
+
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+}
 /* @font-face {
   font-family: "Montserrat-Bold";
   src: url("../src/assets/fonts/Montserrat-Bold.ttf");
@@ -15,8 +22,12 @@
  */
 
 html,
-body {
+body { 
   margin: 0  !important;
   padding: 0 !important;
+
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
  
 }

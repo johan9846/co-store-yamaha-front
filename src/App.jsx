@@ -22,6 +22,8 @@ import { Order } from "./pages/Order/Order";
 import { OrderPay } from "./pages/OrderPay/OrderPay";
 import { ToastContainer } from "react-toastify";
 
+import { ThemeProvider } from "./context/ThemeContext";
+
 // Componente Layout para el encabezado y contenedor de rutas hijas
 const Layout = () => {
   return (
@@ -138,9 +140,11 @@ function App() {
   ]);
 
   return (
+    <ThemeProvider>
     <div className="app">
       <RouterProvider router={router} />
     </div>
+    </ThemeProvider>
   );
 }
 

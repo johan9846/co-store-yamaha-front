@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import { Container, Row, Col } from "react-bootstrap";
 
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext"; // Ajusta la ruta si es diferente
+
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 
@@ -12,6 +15,8 @@ import { InputAdornment, Pagination, TextField } from "@mui/material";
 import { SearchOutlined } from "@mui/icons-material";
 
 export const FilterResult = () => {
+  const { darkMode } = useContext(ThemeContext);
+
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
@@ -98,6 +103,20 @@ export const FilterResult = () => {
             sx={{
               "& .MuiOutlinedInput-root": {
                 borderRadius: "8px",
+                backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+                color: darkMode ? "#fff" : "#000",
+                "& fieldset": {
+                  borderColor: darkMode ? "#444" : "#ccc",
+                },
+                "&:hover fieldset": {
+                  borderColor: darkMode ? "#888" : "#000",
+                },
+              },
+              "& .MuiInputBase-input": {
+                color: darkMode ? "#fff" : "#000",
+              },
+              "& .MuiSvgIcon-root": {
+                color: darkMode ? "#aaa" : "#333",
               },
             }}
           />
