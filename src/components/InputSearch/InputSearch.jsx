@@ -7,15 +7,15 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext"; // Ajusta si la ruta es distinta
+
 
 import { getSearchProduct } from "../../services/admin.services";
 import debounce from "debounce";
 import "./InputSearch.css";
+import { useCartStore } from "../../store/use-cart-store";
 
 const InputSearch = () => {
-  const { darkMode } = useContext(ThemeContext);
+  const { darkMode } = useCartStore();
 
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);

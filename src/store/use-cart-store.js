@@ -6,6 +6,7 @@ export const useCartStore = create(
     (set, get) => ({
       productData: [],
       userInfo: null,
+      darkMode:false,
 
       addToCart: (product) =>
         set((state) => {
@@ -58,10 +59,19 @@ export const useCartStore = create(
       addUser: (user) => set({ userInfo: user }),
 
       removeUser: () => set({ userInfo: null }),
+
+      toggleTheme: () =>
+        set((state) => {
+          const newTheme = !state.darkMode;
+          console.log(newTheme, "new")
+          document.body.classList.toggle("dark-mode", newTheme);
+          return { darkMode: newTheme };
+        }),
+      
     }),
     {
       name: "bazar-storage",
-      getStorage: () => localStorage, // Especifica que se use sessionStorage // Asegura que se usa localStorage correctamente
+      
     }
   )
 );

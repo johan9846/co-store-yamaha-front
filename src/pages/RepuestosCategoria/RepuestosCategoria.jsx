@@ -10,11 +10,11 @@ import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import "./RepuestosCategoria.css";
 import { InputAdornment, Pagination, TextField } from "@mui/material";
 import { SearchOutlined } from "@mui/icons-material";
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext"; // Ajusta la ruta si es diferente
+
+import { useCartStore } from "../../store/use-cart-store";
 
 export const RepuestosCategoria = () => {
-  const { darkMode } = useContext(ThemeContext);
+  const { darkMode } = useCartStore();
 
   const { id } = useParams();
   const [dataCategories, setDataCategories] = useState([]);

@@ -100,7 +100,7 @@ export const OrderComponentPay = () => {
         invoice: idData, // ID de la orden en la BD
         extra1: idData, // Enviar el ID en extra1 para identificar la orden en el webhook
         response: "http://localhost:5173/cart/order", // URL donde redirige después del pago
-        confirmation: "https://7bdc-190-90-255-166.ngrok-free.app/order/pay", // Webhook para verificar pago
+        confirmation: "https://719a-190-90-255-170.ngrok-free.app/order/pay", // Webhook para verificar pago
         country: "CO",
         lang: "es",
       });

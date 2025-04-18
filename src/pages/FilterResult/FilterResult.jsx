@@ -4,8 +4,6 @@ import { useLocation } from "react-router-dom";
 import { ProductsCard } from "../../components/ProductsCard/ProductsCard";
 import { Container, Row, Col } from "react-bootstrap";
 
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext"; // Ajusta la ruta si es diferente
 
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
@@ -13,9 +11,10 @@ import Link from "@mui/material/Link";
 import "./FilterResult.css";
 import { InputAdornment, Pagination, TextField } from "@mui/material";
 import { SearchOutlined } from "@mui/icons-material";
+import { useCartStore } from "../../store/use-cart-store";
 
 export const FilterResult = () => {
-  const { darkMode } = useContext(ThemeContext);
+  const { darkMode } = useCartStore()
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);

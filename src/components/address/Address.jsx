@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useAddressStore } from "../../store/use-address-store"; // Importa la store
 import "./Address.css";
+import { useCartStore } from "../../store/use-cart-store";
 
 const departments = [
   "Antioquia",
@@ -33,6 +34,8 @@ const citiesByDepartment = {
 };
 
 export const Address = () => {
+  const { darkMode } = useCartStore()
+  
   const navigate = useNavigate();
   const schema = z.object({
     name: z.string().min(2, "El nombre es obligatorio"),
@@ -87,6 +90,32 @@ export const Address = () => {
 
   };
 
+  const textFieldSx = {
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
+      backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+      color: darkMode ? "#fff" : "#000",
+      "& fieldset": {
+        borderColor: darkMode ? "#444" : "#ccc",
+      },
+      "&:hover fieldset": {
+        borderColor: darkMode ? "#888" : "#000",
+      },
+    },
+    "& .MuiInputBase-input": {
+      color: darkMode ? "#fff" : "#000",
+    },
+    "& .MuiSvgIcon-root": {
+      color: darkMode ? "#aaa" : "#333",
+    },
+    "& label": {
+      color: darkMode ? "#aaa" : "#000", // label normal
+    },
+   
+ 
+  };
+  
+
   return (
     <Container className="container-cart-item">
       <Row className="justify-content-center">
@@ -102,6 +131,7 @@ export const Address = () => {
                   margin="normal"
                   error={!!errors.name}
                   helperText={errors.name?.message}
+                  sx={textFieldSx}
                 />
               </Col>
 
@@ -113,6 +143,7 @@ export const Address = () => {
                   margin="normal"
                   error={!!errors.last_name}
                   helperText={errors.last_name?.message}
+                  sx={textFieldSx}
                 />
               </Col>
             </Row>
@@ -125,6 +156,7 @@ export const Address = () => {
                   render={({ field }) => (
                     <TextField
                       {...field}
+                      sx={textFieldSx}
                       label="Teléfono"
                       fullWidth
                       margin="normal"
@@ -146,6 +178,7 @@ export const Address = () => {
                 <TextField
                   {...register("address")}
                   label="Dirección"
+                  sx={textFieldSx}
                   fullWidth
                   margin="normal"
                   error={!!errors.address}
@@ -158,6 +191,7 @@ export const Address = () => {
               <Col xs={10} sm={10} md={10} lg={10} xl={5} xxl={5}>
                 <Controller
                   name="departament"
+                
                   control={control}
                   render={({ field }) => (
                     <Autocomplete
@@ -176,6 +210,7 @@ export const Address = () => {
                           margin="normal"
                           error={!!errors.departament}
                           helperText={errors.departament?.message}
+                          sx={textFieldSx}
                         />
                       )}
                     />
@@ -187,6 +222,7 @@ export const Address = () => {
                 <Controller
                   name="city"
                   control={control}
+  
                   render={({ field }) => (
                     <FormControl
                       fullWidth
@@ -195,6 +231,7 @@ export const Address = () => {
                     >
                       <Autocomplete
                         {...field}
+                       
                         options={citiesByDepartment[selectedDepartment] || []}
                         getOptionLabel={(option) => option}
                         value={field.value || ""}
@@ -202,6 +239,7 @@ export const Address = () => {
                         renderInput={(params) => (
                           <TextField
                             {...params}
+                            sx={textFieldSx}
                             label="Ciudad"
                             error={!!errors.city}
                           />

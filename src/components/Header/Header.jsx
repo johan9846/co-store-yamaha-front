@@ -7,12 +7,11 @@ import { FilterInput } from "../FilterInput/FilterInput";
 import InputSearch from "../InputSearch/InputSearch";
 import { Badge } from "@mui/material";
 import "./Header.css";
-import { useContext } from "react";
-import { ThemeContext } from "../../context/ThemeContext"; // asegúrate que la ruta es correcta
+
 
 export const Header = () => {
-  const { productData } = useCartStore();
-  const { darkMode, toggleTheme } = useContext(ThemeContext);
+  const { productData, darkMode, toggleTheme } = useCartStore();
+
 
   return (
     <Container fluid className="header-container">
